@@ -1,4 +1,4 @@
-package com.example.pakkafinalgooglesignin;
+package com.example.SeniorCitizenCare;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

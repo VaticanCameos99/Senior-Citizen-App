@@ -1,4 +1,4 @@
-package com.example.pakkafinalgooglesignin;
+package com.example.SeniorCitizenCare;
 
 import org.junit.Test;
 

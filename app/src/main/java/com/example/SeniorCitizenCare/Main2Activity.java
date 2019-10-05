@@ -1,4 +1,4 @@
-package com.example.pakkafinalgooglesignin;
+package com.example.SeniorCitizenCare;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

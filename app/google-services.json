@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "978368722378",
+    "firebase_url": "https://pakka-final-gs-1568282231045.firebaseio.com",
+    "project_id": "pakka-final-gs-1568282231045",
+    "storage_bucket": "pakka-final-gs-1568282231045.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978368722378:android:c286cbde3fcea74c370b33",
+        "android_client_info": {
+          "package_name": "com.example.SeniorCitizenCare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978368722378-nrbuttuo9224t3rmb4c4ugc5pbvc1hta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.SeniorCitizenCare",
+            "certificate_hash": "9ca41aa40c9314cb6a53ee2e9abca42ad42a9bc4"
+          }
+        },
+        {
+          "client_id": "978368722378-1h9fd3944qncsmhlemv44ol9k18o3m3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN8b0Pgtt5sJN6_4wDZ4nfsoO8lFQSiLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978368722378-1h9fd3944qncsmhlemv44ol9k18o3m3g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.pakkafinalgooglesignin;
+package com.example.SeniorCitizenCare;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,4 +45,14 @@ public class BottomNav extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void onBackPressed(){
+        int backstack = getSupportFragmentManager().getBackStackEntryCount();
+        if (backstack > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+            System.exit(0);
+        }
+    }
 }

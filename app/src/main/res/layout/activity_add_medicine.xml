@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddMedicine"
+    android:layout_gravity="center">
+
+    <EditText
+        android:id="@+id/MedicineName"
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Name of medicine"
+        android:layout_centerHorizontal="true"
+        />
+
+    <!--Try to display the selected time -->
+    <Button
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:layout_below="@+id/MedicineName"
+        android:layout_centerHorizontal="true"
+        />
+
+    <!--Change this to a tick button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveMedicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        app:srcCompat = "@drawable/check_mark"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        tools:ignore="VectorDrawableCompat"
+        android:onClick="Save"/>
+
+    <com.dpro.widgets.WeekdaysPicker
+        android:id="@+id/weekdays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sunday_first_day="true"
+        android:layout_below="@+id/time"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>
