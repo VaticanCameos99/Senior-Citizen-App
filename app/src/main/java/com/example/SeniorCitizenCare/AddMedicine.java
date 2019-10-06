@@ -3,12 +3,14 @@ package com.example.SeniorCitizenCare;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -90,19 +92,22 @@ public class AddMedicine extends AppCompatActivity {
     public void Save(View view){
         final String name = MedicineName.getText().toString();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        Toast.makeText(AddMedicine.this, name, Toast.LENGTH_SHORT).show();
         List<Integer> selectedDays = widget.getSelectedDays();
         //for Firestore
-        if(!TextUtils.isEmpty(name)){
+          if(!TextUtils.isEmpty(name)){
            Medicine medicine = new Medicine(t, selectedDays);
 
             fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Intent returnintent = new Intent();
-                            returnintent.putExtra("medname", name);
-                            setResult(2, returnintent);
+                            Intent data = new Intent();
+                            data.putExtra(CalendarFragment.MEDNAME, name);
+                            if (getParent() == null) {
+                                setResult(CalendarFragment.RESULT_CODE, data);
+                            } else {
+                                getParent().setResult(CalendarFragment.RESULT_CODE, data);
+                            }
                             finish();
                         }
                     })
@@ -112,25 +117,6 @@ public class AddMedicine extends AppCompatActivity {
                             Toast.makeText(AddMedicine.this, "Failure in Saving", Toast.LENGTH_LONG).show();
                         }
                     });
-        }
-
-
-        if(!TextUtils.isEmpty(name)){
-            //if name is there, then add to firebase database
-            String id = databaseMedicines.push().getKey();
-
-            Medicine medicine = new Medicine( t, selectedDays);
-
-            Map<String, Object> medicineUpdates = new HashMap<>();
-            medicineUpdates.put(name, new Medicine( t, selectedDays));
-            databaseMedicines.child(username).setValue(medicineUpdates);
-
-            //databaseMedicines.child(username).child("Email").setValue(emailid);
-         //   databaseMedicines.child(username).child(name).setValue(medicine);
-
-            Toast.makeText(AddMedicine.this, selectedDays.get(0).toString(),Toast.LENGTH_LONG).show();
-            finish();
-
         }
     }
 }

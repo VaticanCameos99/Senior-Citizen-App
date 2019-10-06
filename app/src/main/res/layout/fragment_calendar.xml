@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:weightSum="10"
+    >
 
 <!--
     <CalendarView
@@ -15,39 +17,13 @@
         /> -->
 
     <sun.bob.mcalendarview.MCalendarView
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         tools:context=".CalendarFragment"
         android:id="@+id/calendar"
         android:layout_margin="15dp"
+        android:layout_weight="5"
         />
-
-    <Button
-        android:id="@+id/Save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/calendar"
-        android:text="Save"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="159dp"
-        android:layout_marginLeft="159dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="164dp"
-        android:layout_marginRight="164dp" />
-
-    <EditText
-        android:id="@+id/EventContent"
-        android:layout_width="200dp"
-        android:layout_height="4dp"
-        android:layout_below="@+id/Save"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="159dp"
-        android:layout_marginEnd="164dp"
-        android:layout_marginRight="164dp"
-        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/AddMedicine"
@@ -56,6 +32,6 @@
         android:text="Add a medicine"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/EventContent"/>
+        android:layout_below="@+id/calendar"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -1,55 +1,48 @@
 package com.example.SeniorCitizenCare;
 
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
 import sun.bob.mcalendarview.MCalendarView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import sun.bob.mcalendarview.MarkStyle;
+import sun.bob.mcalendarview.vo.DateData;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
+
 
 
 public class CalendarFragment extends Fragment {
 
-    private mySQLiteOpenHelperClass SQLHandler;
-    private EditText editText;
-    private Button save, addMedicine;
+    private Button addMedicine;
     private MCalendarView calendarView;
-    private String selectedDate;
-    private SQLiteDatabase sqLiteDatabase;
     String name, emailid;
-    private List<Medicine> medicineList;
 
     //Firebase Database reference object
     DatabaseReference databaseMedicines;
@@ -57,6 +50,9 @@ public class CalendarFragment extends Fragment {
     //for firestore
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     private DocumentReference fref;
+    private CollectionReference fcref;
+    public static final String  MEDNAME = "medname";
+    public static final int RESULT_CODE = 2;
 
 
     @Nullable
@@ -77,8 +73,12 @@ public class CalendarFragment extends Fragment {
         //Get email Id and Name -->(Send bundle) --> Save in AddMedicine
 
         calendarView = (MCalendarView) v.findViewById(R.id.calendar);
-        save = v.findViewById(R.id.Save);
-        editText = v.findViewById(R.id.EventContent);
+            calendarView.markDate(
+                    new DateData(2019, 10, 1).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
+                    ));
+
+        markDates();
+
         addMedicine = v.findViewById(R.id.AddMedicine);
 
         addMedicine.setOnClickListener(new View.OnClickListener() {
@@ -99,12 +99,115 @@ public class CalendarFragment extends Fragment {
         return v;
     }
 
+    //Mark previously stored Dates
+    public void markDates(){
+        fcref = fdb.collection("List").document(emailid).collection("Medicine List");
+        fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot ds : queryDocumentSnapshots){
+                    //each documentSnapshot represents one Medicine Object from "Medicine List" Collection
+                    Medicine medicine = ds.toObject(Medicine.class);
+                    List<Integer> selectedDays = medicine.getDays();
+
+                    final Calendar calendar = Calendar.getInstance();
+                    calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
+
+                    for (int j = 0; j < selectedDays.size(); j++){
+                        int k = selectedDays.get(j); //get required Day of week
+                        int cDay = calendar.get(Calendar.DATE); //get current Date
+                        int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
+                        int nextDate;
+
+                        if(day < k){
+                            nextDate = cDay + k - 1;    //for nextDate day in this week
+                        }
+                        else {
+                            nextDate = cDay + (7 - day + k); //for nextDate day in next week
+                        }
+
+                        for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
+                            calendarView.markDate(
+                                    new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
+                            );
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==2)
         {
+            if(resultCode == RESULT_CODE) {
+                String medname = data.getStringExtra(MEDNAME);
+                Toast.makeText(getActivity(), medname, Toast.LENGTH_LONG).show();
+
+                final Calendar calendar = Calendar.getInstance();
+                calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
+                fref = fdb.collection("List").document(emailid).collection("Medicine List").document(medname);
+                fref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            Medicine medicine = documentSnapshot.toObject(Medicine.class);
+                            List<Integer> selectedDays = medicine.getDays();
+
+                            //to mark all dates on calendar of the last entry.
+                            for (int j = 0; j < selectedDays.size(); j++){
+                                int k = selectedDays.get(j); //get required Day of week
+
+                                int cDay = calendar.get(Calendar.DATE); //get current Date
+                                int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
+                                int nextDate;
+                                if(day < k){
+                                    nextDate = cDay + k - 1;    //for nextDate day in this week
+                                }
+                                else {
+                                    nextDate = cDay + (7 - day + k); //for nextDate day in next week
+                                }
+                                for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
+                                    calendarView.markDate(
+                                            new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
+                                    );
+                                }
+                                
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            //Get document of the last updated name.
+            //if name exists, get list of days, and update all dates
+            //repeat in OnCreateView()
+
+//            Calendar calendar = Calendar.getInstance();
+//            int day = calendar.get(Calendar.DAY_OF_WEEK);
+//
+//            int cDay = calendar.get(Calendar.DATE);
+//
+//            int nextDate = cDay + (7 - day + 1);
+//            int count  = 0;
+//
+//            calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
+//
+//            for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
+//                calendarView.markDate(
+//                        new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
+//                );
+//            }
+
+
+
+
+            //endif
+
           /*  fref.get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
