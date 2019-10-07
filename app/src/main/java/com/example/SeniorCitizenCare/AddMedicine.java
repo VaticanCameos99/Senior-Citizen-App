@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dpro.widgets.OnWeekdaysChangeListener;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class AddMedicine extends AppCompatActivity {
 
-    Button time;
+    Button time, timeAfternoon, timeEvening;
     EditText MedicineName;
     LinearTimePickerDialog dialog;
     boolean showTutorial = true;
@@ -62,8 +63,11 @@ public class AddMedicine extends AppCompatActivity {
 
         MedicineName = findViewById(R.id.MedicineName);
         time = findViewById(R.id.time);
+        //timeAfternoon = findViewById(R.id.time);
+        //timeEvening = findViewById(R.id.time);
 
         widget = (WeekdaysPicker) findViewById(R.id.weekdays);
+
 
          dialog = LinearTimePickerDialog.Builder.with(this)
                  .setShowTutorial(showTutorial)
@@ -72,6 +76,7 @@ public class AddMedicine extends AppCompatActivity {
              public void onPositive(DialogInterface dialog, int hour, int minutes) {
                  Toast.makeText(AddMedicine.this, "" + hour + ":" + minutes, Toast.LENGTH_SHORT).show();
                  t = "" + hour + ":" + minutes;
+
                  showTutorial = false;
              }
 
@@ -87,6 +92,7 @@ public class AddMedicine extends AppCompatActivity {
                  dialog.show();
              }
          });
+
     }
 
     public void Save(View view){
@@ -95,7 +101,7 @@ public class AddMedicine extends AppCompatActivity {
         List<Integer> selectedDays = widget.getSelectedDays();
         //for Firestore
           if(!TextUtils.isEmpty(name)){
-           Medicine medicine = new Medicine(t, selectedDays);
+           Medicine medicine = new Medicine(name, t, selectedDays);
 
             fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

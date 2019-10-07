@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import sun.bob.mcalendarview.MCalendarView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import sun.bob.mcalendarview.MarkStyle;
+import sun.bob.mcalendarview.listeners.OnDateClickListener;
 import sun.bob.mcalendarview.vo.DateData;
 
 
@@ -43,6 +47,7 @@ public class CalendarFragment extends Fragment {
     private Button addMedicine;
     private MCalendarView calendarView;
     String name, emailid;
+    ListView mList;
 
     //Firebase Database reference object
     DatabaseReference databaseMedicines;
@@ -60,22 +65,54 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        //Get user Account
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
             name = acct.getDisplayName();
             emailid = acct.getEmail();
 
-            fref = fdb.collection("List").document(emailid);
+            fref = fdb.collection("List").document(emailid);    //Document Refernce
 
             Toast.makeText(this.getActivity(), emailid, Toast.LENGTH_LONG).show();
 
 
         //Get email Id and Name -->(Send bundle) --> Save in AddMedicine
-
+        mList = v.findViewById(R.id.medList);
         calendarView = (MCalendarView) v.findViewById(R.id.calendar);
-            calendarView.markDate(
-                    new DateData(2019, 10, 1).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
-                    ));
+        calendarView.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onDateClick(View view, final DateData date) {
+                final Calendar calendar = Calendar.getInstance();
+                fcref = fdb.collection("List").document(emailid).collection("Medicine List");
+                fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        int cDate = calendar.get(Calendar.DATE); //get current Date
+                        int cDay = calendar.get(Calendar.DAY_OF_WEEK);  //get current day
+                        int difference;
+                        difference = date.getDay() - cDate;
+
+                        Integer newDay = (cDay + difference)% 7;
+                        if (newDay == 0)
+                            newDay = 7;
+
+                        ArrayList<Medicine> medList = new ArrayList<>();
+
+                        for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
+                            Medicine med = ds.toObject(Medicine.class);
+                            List<Integer> days = med.getDays();
+                            if(days.contains(newDay)){
+                                medList.add(med);
+                            }
+                        }
+
+                        //display contents of medList in ListView
+                        Toast.makeText(getActivity(), "" + medList.size(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+        });
 
         markDates();
 

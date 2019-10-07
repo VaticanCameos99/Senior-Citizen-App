@@ -21,11 +21,33 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time"
+        android:text="Morning Time"
         android:layout_below="@+id/MedicineName"
         android:layout_centerHorizontal="true"
+        android:textAlignment="viewStart"
         />
 
+    <!--
+    <TextView
+        android:id="@+id/timeAfternoon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Afternoon Time"
+        android:layout_below="@+id/MedicineName"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="viewStart"
+        />
+
+    <TextView
+        android:id="@+id/timeEvening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Evening Time"
+        android:layout_below="@+id/MedicineName"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="viewStart"
+        />
+-->
     <!--Change this to a tick button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveMedicine"

@@ -8,7 +8,7 @@ import java.util.List;
 public class Medicine {
 
     //int UserId;
-    //private String name;
+    private String name;
     private String time;
     private List<Integer> days;
 
@@ -16,9 +16,9 @@ public class Medicine {
         //public no arg constructor needed
     }
 
-    public Medicine( String time, List<Integer> days) {
+    public Medicine(String name, String time, List<Integer> days) {
       //  UserId = userId;
-        //MedicineName = medicineName;
+        this.name = name;
       //  this.name = name;
         this.time = time;
         this.days = days;
@@ -26,6 +26,7 @@ public class Medicine {
     }
 
    // public int getUserId() {return UserId;}
+
 
     public String getTime() {
         return time;
@@ -35,7 +36,7 @@ public class Medicine {
         return days;
     }
 
-    //public String getName() {return name;}
+    public String getName() {return name;}
 
 
 }

@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         // [START on_start_sign_in]
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this); //add try and catch
         updateUI(account);
         // [END on_start_sign_in]
     }

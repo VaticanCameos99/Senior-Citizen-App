@@ -55,6 +55,12 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //for cardView
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //for recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.0.0' 
+
 }
 //for firebase
 apply plugin: 'com.google.gms.google-services'

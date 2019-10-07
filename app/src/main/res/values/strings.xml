@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pakka final google signin</string>
+    <string name="app_name">Senior Citizen Care</string>
     <string name="signed_out">Signed out</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
 

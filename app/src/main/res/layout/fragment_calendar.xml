@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         /> -->
 
+
     <sun.bob.mcalendarview.MCalendarView
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -33,5 +34,11 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/calendar"/>
+
+    <ListView
+        android:id="@+id/medList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>
