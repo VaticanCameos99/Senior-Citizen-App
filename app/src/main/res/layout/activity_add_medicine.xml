@@ -7,7 +7,29 @@
     tools:context=".AddMedicine"
     android:layout_gravity="center">
 
+    <ImageView
+        android:id="@+id/titleBar"
+        android:background="@drawable/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/titleBar"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Add Medicine"
+        android:textColor="#2C3E50"
+        android:textSize="40dp"
+        />
+
+
     <EditText
+        android:layout_below="@+id/titleBar"
         android:id="@+id/MedicineName"
         android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
