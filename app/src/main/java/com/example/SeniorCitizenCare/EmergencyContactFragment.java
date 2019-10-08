@@ -56,6 +56,21 @@ public class EmergencyContactFragment extends Fragment {
             }
         });
 
+        adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //TODO: Uncomment after adding permissions
+//                String number = list.get(position).mNumber;
+//
+//                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+//
+//                }else{
+//                    String dial = "tel:" + number;
+//                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+//                }
+            }
+        });
+
 //        return inflater.inflate(R.layout.fragment_emergency_contacts, container, false);
         return  v;
     }

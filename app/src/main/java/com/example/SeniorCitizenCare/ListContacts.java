@@ -6,19 +6,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class ListContacts extends AppCompatActivity {
+public class ListContacts extends AppCompatActivity implements ContactRelationDialog.DialogListener {
 
     RecyclerView recyclerView;
 
     ArrayList<ContactClass> list,temp;
     MyAdapterContactClass adapter;
     FloatingActionButton fab;
+    int currPos=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +43,26 @@ public class ListContacts extends AppCompatActivity {
         adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                Toast.makeText(getBaseContext() ,list.get(position).mName, Toast.LENGTH_SHORT).show();
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("contactImage", list.get(position).mImageResource);
-                resultIntent.putExtra("contactName", list.get(position).mName);
-                resultIntent.putExtra("contactNumber", list.get(position).mNumber);
-                resultIntent.putExtra("contactRelation", list.get(position).mRelation);
+                currPos = position;
 
-
-                setResult(RESULT_OK, resultIntent);
-                finish();
+                ContactRelationDialog dialog = new ContactRelationDialog();
+                dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
 
+    }
+
+    @Override
+    public void onClick(String relation) {
+        Log.i("Relation", relation + " established");
+        Log.i("Pos", Integer.toString(currPos));
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("contactImage", list.get(currPos).mImageResource);
+        resultIntent.putExtra("contactName", list.get(currPos).mName);
+        resultIntent.putExtra("contactNumber", list.get(currPos).mNumber);
+        resultIntent.putExtra("contactRelation", relation);
+
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }
