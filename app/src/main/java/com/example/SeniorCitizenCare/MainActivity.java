@@ -211,6 +211,13 @@ public class MainActivity extends AppCompatActivity {
 //        // [END on_start_sign_in]
 //    }
 
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
 //    private void signOut() {
 //        mGoogleSignInClient.signOut()
 //                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
