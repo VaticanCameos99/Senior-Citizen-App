@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "978368722378-jupumub16nl6kj2sp5r5ap91oi9dktgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.SeniorCitizenCare",
+            "certificate_hash": "6781c1d927c2a1204b8d973c2e99df9cdf25d45c"
+          }
+        },
+        {
           "client_id": "978368722378-e3jk52tnnvgldqpb184009msmn3hd43u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
