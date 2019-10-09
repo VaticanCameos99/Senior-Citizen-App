@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".AddMedicine"
     android:layout_gravity="center">
 
@@ -49,27 +50,6 @@
         android:textAlignment="viewStart"
         />
 
-    <!--
-    <TextView
-        android:id="@+id/timeAfternoon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Afternoon Time"
-        android:layout_below="@+id/MedicineName"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="viewStart"
-        />
-
-    <TextView
-        android:id="@+id/timeEvening"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Evening Time"
-        android:layout_below="@+id/MedicineName"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="viewStart"
-        />
--->
     <!--Change this to a tick button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveMedicine"
@@ -93,5 +73,14 @@
         android:layout_margin="15dp"
         android:layout_centerHorizontal="true"/>
 
+    <Button
+        android:id="@+id/DatePicker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="datepicker2"
+        android:layout_below="@+id/weekdays"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="viewStart"
+        />
 
 </RelativeLayout>

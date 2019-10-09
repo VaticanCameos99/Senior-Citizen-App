@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.SeniorCitizenCare"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -60,7 +60,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //for recyclerview
-    implementation 'androidx.recyclerview:recyclerview:1.0.0' 
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    //date range picker
+    implementation 'com.savvi.datepicker:rangepicker:1.2.0'
 
 }
 //for firebase
