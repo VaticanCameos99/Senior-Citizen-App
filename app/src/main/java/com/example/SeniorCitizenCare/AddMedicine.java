@@ -176,9 +176,13 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
         final String name = MedicineName.getText().toString();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         List<Integer> selectedDays = widget.getSelectedDays();
+        ArrayList<Integer> timings = new ArrayList<>();
+        for(int i : selectedTimings){
+            timings.add(i);
+        }
         //for Firestore
           if(!TextUtils.isEmpty(name)){
-           Medicine medicine = new Medicine(name, t, selectedDays);
+           Medicine medicine = new Medicine(name, dates, selectedDays,  timings);
 
             fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

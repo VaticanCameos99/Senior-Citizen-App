@@ -41,7 +41,7 @@ public class myAdapterClass extends RecyclerView.Adapter <myAdapterClass.MyViewH
         Medicine medicine = mList.get(position);
 
         holder.MedicineName.setText(medicine.getName());
-        holder.Time.setText(medicine.getTime());
+        //holder.Time.setText(medicine.getTime());
     }
 
     @Override
