@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
     String t, username, emailid;
     Button datepicker2;
     ArrayList<Date> dates;
+    int[] selectedTimings = new int[7];
 
 
     //database reference objects
@@ -120,6 +122,54 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
     public void openDialog(){
         ExampleDialog exampleDialog = new ExampleDialog();
         exampleDialog.show(getSupportFragmentManager(), "example dialog");
+    }
+
+    public void selectTimings(View view){
+        boolean checked = ((CheckBox)  view ).isChecked();
+        switch (view.getId()){
+            case R.id.before_breakfast:
+                if(checked)
+                    selectedTimings[0] = 1;
+                else
+                    selectedTimings[0] = 0;
+                break;
+            case R.id.after_breakfast:
+                if(checked)
+                    selectedTimings[1] = 1;
+                else
+                    selectedTimings[1] = 0;
+                break;
+            case R.id.before_lunch:
+                if(checked)
+                    selectedTimings[2] = 1;
+                else
+                    selectedTimings[2] = 0;
+                break;
+            case R.id.after_lunch:
+                if(checked)
+                    selectedTimings[3] = 1;
+                else
+                    selectedTimings[3] = 0;
+                break;
+            case R.id.afternoon:
+                if(checked)
+                    selectedTimings[4] = 1;
+                else
+                    selectedTimings[4] = 0;
+                break;
+            case R.id.before_dinner:
+                if(checked)
+                    selectedTimings[5] = 1;
+                else
+                    selectedTimings[5] = 0;
+                break;
+            case R.id.after_dinner:
+                if(checked)
+                    selectedTimings[6] = 1;
+                else
+                    selectedTimings[6] = 0;
+                break;
+        }
     }
 
     public void Save(View view){
