@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,7 @@ public class EmergencyContactFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<ContactClass> list;
     MyAdapterContactClass adapter;
-
+    private EditText editText;
     FloatingActionButton fab;
 
     @Nullable
@@ -38,12 +39,14 @@ public class EmergencyContactFragment extends Fragment {
 
         fab = v.findViewById(R.id.fab);
 
+        //Hide the Searchbar
+        editText = v.findViewById(R.id.mySearch);
+        editText.setVisibility(v.GONE);
+
         recyclerView = v.findViewById(R.id.emergencyRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         list = new ArrayList<>();
-
-        list.add(new ContactClass((R.drawable.ic_person), "Satan", "666", "Daddy"));
         list.add(new ContactClass((R.drawable.ic_person), "Jane Doe", "123", "Daughter"));
 
         adapter = new MyAdapterContactClass(list);

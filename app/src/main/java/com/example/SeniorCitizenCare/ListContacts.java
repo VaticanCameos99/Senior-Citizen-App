@@ -8,7 +8,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,46 +22,25 @@ import java.util.ArrayList;
 
 public class ListContacts extends AppCompatActivity implements ContactRelationDialog.DialogListener {
 
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
+    public EditText editText;
 
-    ArrayList<ContactClass> list,temp;
-    MyAdapterContactClass adapter;
+    public ArrayList<ContactClass> list,temp,listFull;
+    public MyAdapterContactClass adapter;
     FloatingActionButton fab;
     int currPos=-1;
+    int val=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_emergency_contacts);
-
         fab = findViewById(R.id.fab);
-        recyclerView = (RecyclerView) findViewById(R.id.emergencyRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fab.hide();
 
-        list = new ArrayList<>();
-
-//        list.add(new ContactClass((R.drawable.ic_person), "Dwight Schrute", "9999", null));
-
-        temp = getContacts();
-        for(int j=0; j<temp.size(); j++){
-            list.add(new ContactClass((R.drawable.ic_person), temp.get(j).mName, temp.get(j).mNumber,null));
-        }
-
-
-        adapter = new MyAdapterContactClass(list);
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                currPos = position;
-
-                ContactRelationDialog dialog = new ContactRelationDialog();
-                dialog.show(getSupportFragmentManager(), "dialog");
-            }
-        });
-
+        populateList();
+        buildRecyclerView();
+        addSearch();
     }
 
     @Override
@@ -91,4 +75,82 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
 
         return myContacts;
     }
+
+    public void populateList(){
+        list = new ArrayList<>();
+        listFull = new ArrayList<>();
+
+        temp = getContacts();
+
+        for(int j=0; j<temp.size(); j++){
+            list.add(new ContactClass((R.drawable.ic_person), temp.get(j).mName, temp.get(j).mNumber,null));
+        }
+
+        listFull = new ArrayList<>(list);
+    }
+
+    public void buildRecyclerView(){
+        recyclerView = (RecyclerView) findViewById(R.id.emergencyRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new MyAdapterContactClass(list);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                currPos = position;
+
+                ContactRelationDialog dialog = new ContactRelationDialog();
+                dialog.show(getSupportFragmentManager(), "dialog");
+            }
+        });
+    }
+
+    //Function for Searching
+    public void addSearch() {
+        editText = findViewById(R.id.mySearch);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                //Check for Backspace
+                if(val-1 == editable.toString().length())
+                    list = new ArrayList<>(listFull);
+                filter(editable.toString());
+
+                val = editable.toString().length();
+            }
+        });
+    }
+
+    //Search Filter
+    public void filter(String text){
+        ArrayList<ContactClass>filteredList = new ArrayList<>();
+
+        //Refresh List
+        if(text == null || text.length()==0){
+            list = new ArrayList<>(listFull);
+            filteredList.addAll(list);
+        }
+        for(ContactClass item : list){
+            if(item.getmName().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+
+        adapter.filterList(filteredList);
+        list = new ArrayList<>(filteredList);
+    }
+
 }
