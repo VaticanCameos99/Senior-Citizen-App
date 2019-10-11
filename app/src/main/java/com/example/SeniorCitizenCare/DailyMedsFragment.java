@@ -1,5 +1,6 @@
 package com.example.SeniorCitizenCare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class DailyMedsFragment extends Fragment {
+    final int REQUEST_CODE = 3;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference fcref;
@@ -96,6 +98,12 @@ public class DailyMedsFragment extends Fragment {
                         @Override
                         public void onItemClick(int position) {
                             Toast.makeText(getContext(), " " + medList.get(position).getName(), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getActivity(), AddMedicine.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("medname", medList.get(position).getName());
+                            intent.putExtras(bundle);
+                            intent.putExtra("Activity", "DailyMedsFragment");
+                            startActivity(intent);
                         }
                     });
                 }

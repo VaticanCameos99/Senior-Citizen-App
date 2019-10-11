@@ -27,9 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -62,7 +64,7 @@ public class CalendarFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         //Get user Account
@@ -128,6 +130,7 @@ public class CalendarFragment extends Fragment {
                 bundle.putString("name", name);
                 bundle.putString("emailid", emailid);
                 intent.putExtras(bundle);
+                intent.putExtra("Activity", "CalendarFragment");
                 startActivityForResult(intent, 2);
             }
         });
@@ -175,7 +178,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, final Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==2)
@@ -195,80 +198,74 @@ public class CalendarFragment extends Fragment {
                             List<Integer> selectedDays = medicine.getDays();
 
                             //to mark all dates on calendar of the last entry.
-                            for (int j = 0; j < selectedDays.size(); j++){
-                                int k = selectedDays.get(j); //get required Day of week
+//                            for (int j = 0; j < selectedDays.size(); j++){
+//                                int k = selectedDays.get(j); //get required Day of week
+//
+//                                int cDay = calendar.get(Calendar.DATE); //get current Date
+//                                int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
+//                                int nextDate;
+//                                if(day < k){
+//                                    nextDate = cDay + k - 1;    //for nextDate day in this week
+//                                }
+//                                else {
+//                                    nextDate = cDay + (7 - day + k); //for nextDate day in next week
+//                                }
+//                                for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
+//                                    calendarView.markDate(
+//                                            new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
+//                                    );
+//                                }
+//
+//                            }
 
-                                int cDay = calendar.get(Calendar.DATE); //get current Date
-                                int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
-                                int nextDate;
-                                if(day < k){
-                                    nextDate = cDay + k - 1;    //for nextDate day in this week
-                                }
-                                else {
-                                    nextDate = cDay + (7 - day + k); //for nextDate day in next week
-                                }
-                                for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
-                                    calendarView.markDate(
-                                            new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
-                                    );
-                                }
-                                
-                            }
+                            //get date Range
+//                            ArrayList<Date> selectedDates = medicine.getSelecteddays();
+//                            //get first Date
+//                            SimpleDateFormat df = new SimpleDateFormat("dd");
+//
+//                            //get today's date
+//                            Calendar calendar = Calendar.getInstance();
+//                            //case 1: today is 10th first date is 11 ==> dif = 1 ==> fDay = 6
+//                            //case 2: today is 10 firstday is 9 ==> dif = 1
+//                            //case 3: same today and first date
+//                            //case 4: today 19 first Day 15 ==> dif = 4
+//
+//                            List<Integer> Days = medicine.getDays();
+//
+//                            SimpleDateFormat dfmonth = new SimpleDateFormat("MM");
+//                            int i = 0;
+//                            for(Date date : selectedDates){
+//                                int dateDay = getDay(date);
+//                                if (Days.get(i) == dateDay) {
+//                                    int month = Integer.parseInt(dfmonth.format(date));
+//                                    int day = Integer.parseInt(df.format(date));
+//                                    calendarView.markDate(
+//                                            new DateData(2019, month, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.rgb(52, 152, 187))));
+//                                }
+//                                i++;
+//                                if(i == Days.size()){
+//                                    i = 0;
+//                                }
+//                            }
                         }
                     }
                 });
 
             }
-
-            //Get document of the last updated name.
-            //if name exists, get list of days, and update all dates
-            //repeat in OnCreateView()
-
-//            Calendar calendar = Calendar.getInstance();
-//            int day = calendar.get(Calendar.DAY_OF_WEEK);
-//
-//            int cDay = calendar.get(Calendar.DATE);
-//
-//            int nextDate = cDay + (7 - day + 1);
-//            int count  = 0;
-//
-//            calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
-//
-//            for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
-//                calendarView.markDate(
-//                        new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
-//                );
-//            }
-
-
-
-
-            //endif
-
-          /*  fref.get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if(documentSnapshot.exists()){
-                               Medicine medicine = documentSnapshot.toObject(Medicine.class);
-                                String medname = medicine.getName();
-                                String time = medicine.getTime();
-                                List<Integer> selectedDays = medicine.getDays();
-                                Toast.makeText(getActivity(), medname, Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                Toast.makeText(getActivity(), "Document does not exist", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-                            Log.d(TAG, e.toString());
-                        }
-                    }); */
         }
+    }
+
+    public int getDay(Date d){
+        String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"};
+
+        SimpleDateFormat dfday = new SimpleDateFormat("EEEE");
+        String day = dfday.format(d);
+        for(int i = 0; i < DaysOfWeek.length; i++){
+            if(DaysOfWeek[i] == day){
+                return i+1;
+            }
+        }
+        return 8;
     }
 }
 

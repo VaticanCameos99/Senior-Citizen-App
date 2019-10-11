@@ -7,4 +7,5 @@
     <color name="daySelected">#3F51B5</color>
     <color name="dayDeselected">@android:color/darker_gray</color>
     <color name="background">#ECF0F1</color>
+    <color name="CalendarHighlight">#3498bb</color>
 </resources>

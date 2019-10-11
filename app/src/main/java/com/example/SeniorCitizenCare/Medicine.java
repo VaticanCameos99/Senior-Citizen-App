@@ -11,7 +11,7 @@ public class Medicine {
 
     //int UserId;
     private String name;
-    private ArrayList<Date> selecteddays;
+    private ArrayList<Date> selecteddates;
     private List<Integer> days;
     private ArrayList<Integer> selectedtimings;
 
@@ -23,7 +23,7 @@ public class Medicine {
       //  UserId = userId;
         this.name = name;
       //  this.name = name;
-        this.selecteddays = selecteddays;
+        this.selecteddates = selecteddays;
         this.days = days;
         this.selectedtimings = selectedtimings;
         //Username = username;
@@ -32,7 +32,7 @@ public class Medicine {
    // public int getUserId() {return UserId;}
 
 
-    public ArrayList<Date> getSelecteddays() {return selecteddays;}
+    public ArrayList<Date> getSelecteddates() {return selecteddates;}
 
     public List<Integer> getDays() {
         return days;

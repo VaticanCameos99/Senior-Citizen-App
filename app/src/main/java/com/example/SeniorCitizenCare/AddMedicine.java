@@ -31,8 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.savvi.rangedatepicker.CalendarPickerView;
 
@@ -61,6 +64,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
 
     //database reference objects
     DatabaseReference  databaseMedicines;
+    String act;
 
     //firestore database
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
@@ -70,12 +74,8 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medicine);
 
-        //Retrieving Bundle information
-        Bundle bundle = getIntent().getExtras();
-        username = bundle.getString("name");
-        emailid = bundle.getString("emailid");
-
-
+        widget = (WeekdaysPicker) findViewById(R.id.weekdays);
+        MedicineName = findViewById(R.id.MedicineName);
         datepicker2 = (Button) findViewById(R.id.DatePicker2);
         datepicker2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,38 +84,109 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
             }
         });
 
+        //Retrieving Bundle information
+        Bundle bundle = getIntent().getExtras();
+        act = bundle.getString("Activity");
+        if(act.equals("CalendarFragment")) {
+            username = bundle.getString("name");
+            emailid = bundle.getString("emailid");
 
-        databaseMedicines = FirebaseDatabase.getInstance().getReference("Medicines");
 
-        MedicineName = findViewById(R.id.MedicineName);
-        time = findViewById(R.id.time);
+            databaseMedicines = FirebaseDatabase.getInstance().getReference("Medicines");
 
-        widget = (WeekdaysPicker) findViewById(R.id.weekdays);
+            time = findViewById(R.id.time);
 
+            dialog = LinearTimePickerDialog.Builder.with(this)
+                    .setShowTutorial(showTutorial)
+                    .setButtonCallback(new LinearTimePickerDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(DialogInterface dialog, int hour, int minutes) {
+                            Toast.makeText(AddMedicine.this, "" + hour + ":" + minutes, Toast.LENGTH_SHORT).show();
+                            t = "" + hour + ":" + minutes;
 
-         dialog = LinearTimePickerDialog.Builder.with(this)
-                 .setShowTutorial(showTutorial)
-                 .setButtonCallback(new LinearTimePickerDialog.ButtonCallback() {
-             @Override
-             public void onPositive(DialogInterface dialog, int hour, int minutes) {
-                 Toast.makeText(AddMedicine.this, "" + hour + ":" + minutes, Toast.LENGTH_SHORT).show();
-                 t = "" + hour + ":" + minutes;
+                            showTutorial = false;
+                        }
 
-                 showTutorial = false;
-             }
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
 
-             @Override
-             public void onNegative(DialogInterface dialog) {
+                        }
+                    }).build();
 
-             }
-         }).build();
+            time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.show();
+                }
+            });
+        }
+        else if(act.equals("DailyMedsFragment")){
+            String medName = bundle.getString("medname");
+            updateUI(medName);
+        }
+    }
 
-         time.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 dialog.show();
-             }
-         });
+    DocumentReference fdref;
+
+    public void updateUI(final String medName){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String email = acct.getEmail();
+            fdref = fdb.collection("List").document(email).collection("Medicine List").document(medName);
+            fdref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Medicine medicine = documentSnapshot.toObject(Medicine.class);
+                    String Name = medicine.getName();
+                    MedicineName.setText(Name);
+                    selectedDays = (ArrayList<Integer>) medicine.getDays();
+                    widget.setSelectedDays(selectedDays);
+                    timings = medicine.getSelectedtimings();
+                    dates = medicine.getSelecteddates();
+                    for(int i = 0; i < timings.size(); i++){
+                        if(timings.get(i) == 1){
+                            switch (i){
+                                case 0:
+                                    CheckBox chk = findViewById(R.id.before_breakfast);
+                                    chk.setChecked(true);
+                                    selectedTimings[0] = 1;
+                                    break;
+                                case 1:
+                                    CheckBox chk1 = findViewById(R.id.after_breakfast);
+                                    chk1.setChecked(true);
+                                    selectedTimings[1] = 1;
+                                    break;
+                                case 2:
+                                    CheckBox chk2 = findViewById(R.id.before_lunch);
+                                    chk2.setChecked(true);
+                                    selectedTimings[2] = 1;
+                                    break;
+                                case 3:
+                                    CheckBox chk3 = findViewById(R.id.after_lunch);
+                                    chk3.setChecked(true);
+                                    selectedTimings[3] = 1;
+                                    break;
+                                case 4:
+                                    CheckBox chk4 = findViewById(R.id.afternoon);
+                                    chk4.setChecked(true);
+                                    selectedTimings[4] = 1;
+                                    break;
+                                case 5:
+                                    CheckBox chk5 = findViewById(R.id.before_dinner);
+                                    chk5.setChecked(true);
+                                    selectedTimings[5] = 1;
+                                    break;
+                                case 6:
+                                    CheckBox chk6 = findViewById(R.id.after_dinner);
+                                    chk6.setChecked(true);
+                                    selectedTimings[6] = 1;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
     }
 
@@ -171,45 +242,59 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                 break;
         }
     }
+    ArrayList<Integer> timings = new ArrayList<>();
+    List<Integer> selectedDays; // for weekdays
 
     public void Save(View view){
         final String name = MedicineName.getText().toString();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        List<Integer> selectedDays = widget.getSelectedDays();
-        ArrayList<Integer> timings = new ArrayList<>();
-        for(int i : selectedTimings){
-            timings.add(i);
-        }
-        //for Firestore
-          if(!TextUtils.isEmpty(name)){
-           Medicine medicine = new Medicine(name, dates, selectedDays,  timings);
+        if(acct != null) {
+            emailid = acct.getEmail();
+            if (act.equals("CalendarFragment")) {
+                selectedDays = widget.getSelectedDays();
+                for (int i = 0; i < selectedTimings.length; i++) {
+                    timings.add(0);
+                    timings.set(i, selectedTimings[i]);
+                }
+            } else {
+                selectedDays = widget.getSelectedDays();
+                for (int i = 0; i < selectedTimings.length; i++) {
+                    timings.set(i, selectedTimings[i]);
+                }
+            }
+            //for Firestore
+            if (!TextUtils.isEmpty(name) && !dates.isEmpty() && !selectedDays.isEmpty() && !timings.isEmpty()) {
+                Medicine medicine = new Medicine(name, dates, selectedDays, timings);
 
-            fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Intent data = new Intent();
-                            data.putExtra(CalendarFragment.MEDNAME, name);
-                            if (getParent() == null) {
-                                setResult(CalendarFragment.RESULT_CODE, data);
-                            } else {
-                                getParent().setResult(CalendarFragment.RESULT_CODE, data);
+                fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Intent data = new Intent();
+                                data.putExtra(CalendarFragment.MEDNAME, name);
+                                if (getParent() == null) {
+                                    setResult(CalendarFragment.RESULT_CODE, data);
+                                } else {
+                                    getParent().setResult(CalendarFragment.RESULT_CODE, data);
+                                }
+                                finish();
                             }
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(AddMedicine.this, "Failure in Saving", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(AddMedicine.this, "Failure in Saving", Toast.LENGTH_LONG).show();
+                            }
+                        });
+            } else {
+                Toast.makeText(AddMedicine.this, "Make sure all entries are specified", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
     public void applyTexts(ArrayList<Date> dates) {
-        this.dates = dates;
+        this.dates = dates; // getting list of dates from dialog listener
         Toast.makeText(this, "" + this.dates.size(), Toast.LENGTH_LONG).show();
     }
 }
