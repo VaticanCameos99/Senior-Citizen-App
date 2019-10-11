@@ -3,8 +3,12 @@ package com.example.SeniorCitizenCare;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStatusTextView;
     FirebaseAuth mAuth;
 
+    private int REQUEST_CODE = 2;
+
 
     SignInButton sign_in_button;
 
@@ -44,6 +50,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Check for Calling Permission
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED){
+            //Permission not Granted
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.READ_CONTACTS},REQUEST_CODE);
+        }
+
+//        Check for Contacts Permission
+//        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED){
+//            //Permission not Granted
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+//                    Manifest.permission.READ_CONTACTS},CONTACTS_REQUEST_CODE);
+//        }
 
         // Views
 //        mStatusTextView = findViewById(R.id.status);
@@ -211,12 +233,13 @@ public class MainActivity extends AppCompatActivity {
 //        // [END on_start_sign_in]
 //    }
 
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
+    //TODO: Remove this otherwise App will go to the next screen without permission in older commits
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        updateUI(currentUser);
+//    }
 
 //    private void signOut() {
 //        mGoogleSignInClient.signOut()

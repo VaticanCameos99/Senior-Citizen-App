@@ -1,7 +1,10 @@
 package com.example.SeniorCitizenCare;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,15 +63,14 @@ public class EmergencyContactFragment extends Fragment {
         adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //TODO: Uncomment after adding permissions
-//                String number = list.get(position).mNumber;
-//
-//                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
-//
-//                }else{
-//                    String dial = "tel:" + number;
-//                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-//                }
+            String number = list.get(position).mNumber;
+
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+
+            }else{
+                String dial = "tel:" + number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
             }
         });
 
