@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContactClass.MyViewHolder> {
 
     ArrayList<ContactClass> mList;
+//    ArrayList<ContactClass> mListFull;
     OnItemClickListener mListener;
 
     public interface OnItemClickListener{
@@ -25,7 +26,9 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
     }
 
     public MyAdapterContactClass(ArrayList<ContactClass> mList) {
+
         this.mList = mList;
+//        this.mListFull = new ArrayList<>(mList);
     }
 
     @NonNull
@@ -79,5 +82,11 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
                 }
             });
         }
+    }
+
+    public void filterList(ArrayList<ContactClass> filteredList){
+
+        mList = filteredList;
+        notifyDataSetChanged();
     }
 }
