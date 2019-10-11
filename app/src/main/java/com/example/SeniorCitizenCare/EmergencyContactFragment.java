@@ -43,7 +43,7 @@ public class EmergencyContactFragment extends Fragment {
 
         list = new ArrayList<>();
 
-        list.add(new ContactClass((R.drawable.ic_person), "John Doe", "999", "Son"));
+        list.add(new ContactClass((R.drawable.ic_person), "Satan", "666", "Daddy"));
         list.add(new ContactClass((R.drawable.ic_person), "Jane Doe", "123", "Daughter"));
 
         adapter = new MyAdapterContactClass(list);

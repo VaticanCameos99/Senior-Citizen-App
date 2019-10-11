@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,8 +36,13 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
 
         list = new ArrayList<>();
 
+//        list.add(new ContactClass((R.drawable.ic_person), "Dwight Schrute", "9999", null));
 
-        list.add(new ContactClass((R.drawable.ic_person), "Dwight Schrute", "9999", null));
+        temp = getContacts();
+        for(int j=0; j<temp.size(); j++){
+            list.add(new ContactClass((R.drawable.ic_person), temp.get(j).mName, temp.get(j).mNumber,null));
+        }
+
 
         adapter = new MyAdapterContactClass(list);
         recyclerView.setAdapter(adapter);
@@ -64,5 +71,24 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
 
         setResult(RESULT_OK, resultIntent);
         finish();
+    }
+
+    public ArrayList<ContactClass> getContacts(){
+        ArrayList<ContactClass> myContacts = new ArrayList<>();
+
+        Cursor cursor = this.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null
+                ,null,null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        cursor.moveToFirst();
+
+        while(cursor.moveToNext()){
+
+            myContacts.add(new ContactClass(0,
+                    cursor.getString(cursor.getColumnIndex((ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))),
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), null));
+
+        }
+        cursor.close();
+
+        return myContacts;
     }
 }
