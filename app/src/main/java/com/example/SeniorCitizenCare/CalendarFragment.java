@@ -195,62 +195,27 @@ public class CalendarFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
                             Medicine medicine = documentSnapshot.toObject(Medicine.class);
+                            SimpleDateFormat sdfday = new SimpleDateFormat("dd");
+                            ArrayList<Date> selectedDates = medicine.getSelecteddates();
                             List<Integer> selectedDays = medicine.getDays();
+                            int i = 0;
+                            for(Date date : selectedDates){
+                                int dateDayint = getDay(date);
+                                if(dateDayint == selectedDays.get(i)){
+                                    i++;
+                                    if(i == selectedDays.size()){
+                                        i = 0;
+                                    }
 
-                            //to mark all dates on calendar of the last entry.
-//                            for (int j = 0; j < selectedDays.size(); j++){
-//                                int k = selectedDays.get(j); //get required Day of week
-//
-//                                int cDay = calendar.get(Calendar.DATE); //get current Date
-//                                int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
-//                                int nextDate;
-//                                if(day < k){
-//                                    nextDate = cDay + k - 1;    //for nextDate day in this week
-//                                }
-//                                else {
-//                                    nextDate = cDay + (7 - day + k); //for nextDate day in next week
-//                                }
-//                                for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
-//                                    calendarView.markDate(
-//                                            new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
-//                                    );
-//                                }
-//
-//                            }
-
-                            //get date Range
-//                            ArrayList<Date> selectedDates = medicine.getSelecteddays();
-//                            //get first Date
-//                            SimpleDateFormat df = new SimpleDateFormat("dd");
-//
-//                            //get today's date
-//                            Calendar calendar = Calendar.getInstance();
-//                            //case 1: today is 10th first date is 11 ==> dif = 1 ==> fDay = 6
-//                            //case 2: today is 10 firstday is 9 ==> dif = 1
-//                            //case 3: same today and first date
-//                            //case 4: today 19 first Day 15 ==> dif = 4
-//
-//                            List<Integer> Days = medicine.getDays();
-//
-//                            SimpleDateFormat dfmonth = new SimpleDateFormat("MM");
-//                            int i = 0;
-//                            for(Date date : selectedDates){
-//                                int dateDay = getDay(date);
-//                                if (Days.get(i) == dateDay) {
-//                                    int month = Integer.parseInt(dfmonth.format(date));
-//                                    int day = Integer.parseInt(df.format(date));
-//                                    calendarView.markDate(
-//                                            new DateData(2019, month, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.rgb(52, 152, 187))));
-//                                }
-//                                i++;
-//                                if(i == Days.size()){
-//                                    i = 0;
-//                                }
-//                            }
+                                    int day = Integer.parseInt(sdfday.format(date));
+                                    calendarView.markDate(
+                                             new DateData(2019, 10, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.rgb(52, 152, 187)))
+                                    );
+                                }
+                            }
                         }
                     }
                 });
-
             }
         }
     }
@@ -258,10 +223,10 @@ public class CalendarFragment extends Fragment {
     public int getDay(Date d){
         String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"};
 
-        SimpleDateFormat dfday = new SimpleDateFormat("EEEE");
-        String day = dfday.format(d);
+        SimpleDateFormat sdfday = new SimpleDateFormat("EEEE");
+        String dday = sdfday.format(d);
         for(int i = 0; i < DaysOfWeek.length; i++){
-            if(DaysOfWeek[i] == day){
+            if(DaysOfWeek[i] == dday){
                 return i+1;
             }
         }

@@ -57,7 +57,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
     boolean showTutorial = true;
     WeekdaysPicker widget;
     String t, username, emailid;
-    Button datepicker2;
+    Button datepicker2, delete;
     ArrayList<Date> dates;
     int[] selectedTimings = new int[7];
 
@@ -83,6 +83,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                 openDialog();
             }
         });
+        delete = findViewById(R.id.delete);
 
         //Retrieving Bundle information
         Bundle bundle = getIntent().getExtras();
@@ -121,9 +122,22 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
             });
         }
         else if(act.equals("DailyMedsFragment")){
-            String medName = bundle.getString("medname");
+            delete.setVisibility(View.VISIBLE);
+             medName = bundle.getString("medname");
             updateUI(medName);
         }
+    }
+
+    String medName;
+
+    public void DeleteMedicine(View view){
+        fdref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(AddMedicine.this, "Deleted Successfully", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
     }
 
     DocumentReference fdref;
