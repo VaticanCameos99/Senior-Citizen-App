@@ -20,7 +20,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -32,29 +40,33 @@ public class EmergencyContactFragment extends Fragment {
     private EditText editText;
     FloatingActionButton fab;
 
+    private String emailId;
+    private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_emergency_contacts, container, false);
 
-        fab = v.findViewById(R.id.fab);
+        //Google Account
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+        emailId = acct.getEmail();
 
-        //Hide the Searchbar
+        //Hide the Search bar
         editText = v.findViewById(R.id.mySearch);
         editText.setVisibility(v.GONE);
 
         recyclerView = v.findViewById(R.id.emergencyRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         list = new ArrayList<>();
-        list.add(new ContactClass((R.drawable.ic_person), "Jane Doe", "123", "Daughter"));
+
+        getContacts();
 
         adapter = new MyAdapterContactClass(list);
         recyclerView.setAdapter(adapter);
 
-
-        adapter.notifyDataSetChanged();
-
+        fab = v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +93,25 @@ public class EmergencyContactFragment extends Fragment {
         return  v;
     }
 
+    //Get from dB
+    public void getContacts(){
+        collectionReference = fdb.collection("List").document(emailId).collection("Contact List");
+        collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot qds : queryDocumentSnapshots){
+                    ContactClass contact = qds.toObject(ContactClass.class);
+
+                    ContactClass obj = new ContactClass(contact.getmImageResource(),
+                            contact.getmName(),contact.getmNumber(),contact.getmRelation());
+                    list.add(obj);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -91,7 +122,10 @@ public class EmergencyContactFragment extends Fragment {
                 String contactNumber = data.getStringExtra("contactNumber");
                 String contactRelation = data.getStringExtra("contactRelation");
 
+                ContactClass obj = new ContactClass(contactImage,contactName,contactNumber,contactRelation);
                 list.add(new ContactClass(contactImage,contactName,contactNumber,contactRelation));
+                fdb.collection("List").document(emailId).collection("Contact List").document(contactName).set(obj);
+
                 adapter.notifyDataSetChanged();
 
             }

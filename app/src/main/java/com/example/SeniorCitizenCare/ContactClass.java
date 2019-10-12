@@ -6,6 +6,10 @@ public class ContactClass {
     String mNumber;
     String mRelation;
 
+    public ContactClass(){
+
+    }
+
     public ContactClass(int mImageResource, String mName, String mNumber, String mRelation) {
         this.mImageResource = mImageResource;
         this.mName = mName;
