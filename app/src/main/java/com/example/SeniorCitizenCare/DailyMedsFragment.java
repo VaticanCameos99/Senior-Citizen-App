@@ -43,7 +43,7 @@ public class DailyMedsFragment extends Fragment {
     myAdapterClass adapter;
     GoogleSignInAccount acct;
     View v;
-    CardView toadysList, exercises;
+    CardView toadysList, exercises, diet, yourMedList;
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
@@ -72,10 +72,11 @@ public class DailyMedsFragment extends Fragment {
 
         acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
-            //updateUI();
 
             toadysList = v.findViewById(R.id.Todayslist);
             exercises = v.findViewById(R.id.exercises);
+            diet = v.findViewById(R.id.diet);
+            yourMedList = v.findViewById(R.id.YourMeds);
 
             toadysList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,8 +91,30 @@ public class DailyMedsFragment extends Fragment {
                     updateUIForExercise();
                 }
             });
+
+            diet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Diet();
+                }
+            });
+
+            yourMedList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TotalMedList();
+                }
+            });
         }
         return v;
+    }
+
+    public void TotalMedList(){
+
+    }
+
+    public void Diet(){
+
     }
 
     public void updateUIForExercise(){

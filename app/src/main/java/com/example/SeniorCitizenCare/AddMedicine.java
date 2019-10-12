@@ -276,6 +276,15 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                     timings.set(i, selectedTimings[i]);
                 }
             }
+
+            //test this
+//            for(Date date: dates){
+//                int dateDayint = CalendarFragment.getDay(date);
+//                if(!selectedDays.contains(dateDayint)){
+//                    dates.remove(date);
+//                }
+//            }
+
             //for Firestore
             if (!TextUtils.isEmpty(name) && !dates.isEmpty() && !selectedDays.isEmpty() && !timings.isEmpty()) {
                 Medicine medicine = new Medicine(name, dates, selectedDays, timings);

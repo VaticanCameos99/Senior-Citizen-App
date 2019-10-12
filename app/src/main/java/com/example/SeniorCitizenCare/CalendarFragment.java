@@ -112,6 +112,7 @@ public class CalendarFragment extends Fragment {
                                 int sdatemonth = Integer.parseInt(sdfMonth.format(sdate));
                                 int sdatedate = Integer.parseInt(sdfdate.format(sdate));
                                 int sdateday = getDay(sdate);
+                                //remove days here
                                 if(sdatemonth == date.getMonth() && sdatedate == date.getDay() && days.contains(sdateday)){
                                     medList.add(med);
                                 }
@@ -220,7 +221,7 @@ public class CalendarFragment extends Fragment {
                 });
     }
 
-    public int getDay(Date d){
+    public static int getDay(Date d){
         String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"};
 
         SimpleDateFormat sdfday = new SimpleDateFormat("EE");
