@@ -44,6 +44,9 @@ public class DailyMedsFragment extends Fragment {
     View v;
     CardView toadysList, exercises;
 
+    private MyAdapterYogaClass yogaAdapter;
+    private ArrayList<YogaClass> yogaList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,15 +86,25 @@ public class DailyMedsFragment extends Fragment {
             exercises.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updateUIforExercise();
+                    updateUIForExercise();
                 }
             });
         }
         return v;
     }
 
-    public void updateUIforExercise(){
-        
+    public void updateUIForExercise(){
+        recyclerView = v.findViewById(R.id.DailyMedsRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
+
+        yogaList = new ArrayList<>();
+        yogaList.add(new YogaClass(R.drawable.ic_person, "Shav Aasan", "Rest"));
+        yogaList.add(new YogaClass(R.drawable.ic_person, "Makar Aasan", "Rest more"));
+
+        yogaAdapter = new MyAdapterYogaClass(yogaList);
+        recyclerView.setAdapter(yogaAdapter);
+
+//        Toast.makeText(getContext(), "Yoga", Toast.LENGTH_SHORT).show();
     }
 
     @Override
