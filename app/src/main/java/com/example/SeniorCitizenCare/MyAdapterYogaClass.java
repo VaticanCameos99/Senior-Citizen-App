@@ -15,6 +15,16 @@ public class MyAdapterYogaClass extends RecyclerView.Adapter<MyAdapterYogaClass.
 
     ArrayList<YogaClass> mList;
 
+    OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener=listener;
+    }
+
     public MyAdapterYogaClass(ArrayList<YogaClass> mList) {
         this.mList = mList;
     }
@@ -52,6 +62,18 @@ public class MyAdapterYogaClass extends RecyclerView.Adapter<MyAdapterYogaClass.
             mYogaImageView = itemView.findViewById(R.id.yogaImageView);
             mYogaTitle = itemView.findViewById(R.id.yogaTitle);
             mYogaDescription = itemView.findViewById(R.id.yogaDescription);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

@@ -35,7 +35,6 @@
             android:textSize="15sp"
             android:layout_below="@+id/yogaTitle"
             android:layout_toRightOf="@+id/yogaImageView"
-            android:layout_marginLeft="8dp"
             android:id="@+id/yogaDescription"/>
 
 

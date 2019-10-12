@@ -1,6 +1,7 @@
 package com.example.SeniorCitizenCare;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,16 +96,22 @@ public class DailyMedsFragment extends Fragment {
 
     public void updateUIForExercise(){
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        yogaList = new ArrayList<>();
-        yogaList.add(new YogaClass(R.drawable.ic_person, "Shav Aasan", "Rest"));
-        yogaList.add(new YogaClass(R.drawable.ic_person, "Makar Aasan", "Rest more"));
-
+        addYoga();
         yogaAdapter = new MyAdapterYogaClass(yogaList);
         recyclerView.setAdapter(yogaAdapter);
 
-//        Toast.makeText(getContext(), "Yoga", Toast.LENGTH_SHORT).show();
+        yogaAdapter.setOnItemClickListener(new MyAdapterYogaClass.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+//                Toast.makeText(getContext(), yogaList.get(position).getmName(), Toast.LENGTH_SHORT).show();
+                String link = "http://www.google.com";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(yogaList.get(position).getmLink()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -155,6 +162,17 @@ public class DailyMedsFragment extends Fragment {
                 });
             }
         });
+
+    }
+
+    public void addYoga(){
+        yogaList = new ArrayList<>();
+        yogaList.add(new YogaClass(R.drawable.ic_person, "Vinyasa Yoga",
+                "Vinyasa yoga is popular and is taught at most studios and gyms. “Vinyasa” means linking breath with movement.",
+                "https://www.youtube.com/watch?v=9kOCY0KNByw"));
+        yogaList.add(new YogaClass(R.drawable.ic_person, "Ashtanga Yoga",
+                "Ashtanga means “eight limbs” and encompasses a yogic lifestyle",
+                "https://www.youtube.com/watch?v=OAg0oNHVjXQ"));
 
     }
 
