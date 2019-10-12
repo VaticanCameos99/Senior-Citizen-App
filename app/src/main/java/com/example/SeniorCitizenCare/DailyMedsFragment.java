@@ -39,11 +39,13 @@ public class DailyMedsFragment extends Fragment {
 
     RecyclerView recyclerView;
     myAdapterClass adapter;
+    GoogleSignInAccount acct;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_daily_meds, container, false);
+        v = inflater.inflate(R.layout.fragment_daily_meds, container, false);
 
         /* WORKFLOW:
         * make fcref to medicine_List
@@ -62,79 +64,62 @@ public class DailyMedsFragment extends Fragment {
         *           check if calendar is getting updated
         * */
 
-        //get UserEmailID to access document
-        //medicine = v.findViewById(R.id.MedName);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
+        acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
-            recyclerView = v.findViewById(R.id.DailyMedsRecycler);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
-
-            emailid = acct.getEmail();
-
-            fcref = db.collection("List").document(emailid).collection("Medicine List");
-
-
-            //Get today's day of the week
-            final Calendar calendar = Calendar.getInstance();
-            final int cDay = calendar.get(Calendar.DAY_OF_WEEK);  //get current day
-
-            fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    final ArrayList<Medicine> medList = new ArrayList<>();
-                    for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
-                        Medicine med = ds.toObject(Medicine.class);
-                        List<Integer> days = med.getDays();
-                        if(days.contains(cDay)){
-                            medList.add(med);
-                        }
-                        //add to list here
-                    }
-                    adapter = new myAdapterClass(medList);
-                    recyclerView.setAdapter(adapter);
-
-                    adapter.setOnItemClickListener(new myAdapterClass.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int position) {
-                            Toast.makeText(getContext(), " " + medList.get(position).getName(), Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getActivity(), AddMedicine.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("medname", medList.get(position).getName());
-                            intent.putExtras(bundle);
-                            intent.putExtra("Activity", "DailyMedsFragment");
-                            startActivity(intent);
-                        }
-                    });
-                }
-            });
+            updateUI();
         }
         return v;
     }
 
-    //Add onclick Listener for list
-    /*
-    *for modal refer: https://stackoverflow.com/questions/18371883/how-to-create-modal-dialog-box-in-android
-    * AlertDialog.Builder alert = new AlertDialog.Builder(this.getActivity());
-    * alert.setTitle("Do you want to Update or Delete this entry?");
-    *
-    * alert.setPositiveButton("Delete", new  DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int whichButton) {
-            //delete entry, refer: https://www.youtube.com/watch?v=Bh0h_ZhX-Qg&list=PLrnPJCHvNZuDrSqu-dKdDi3Q6nM-VUyxD&index=8
-        }
-    });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        updateUI();
+    }
 
-    alert.setNegativeButton("Update",
-        new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+    public void updateUI(){
+        recyclerView = v.findViewById(R.id.DailyMedsRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
 
-            //Intent to new Updateactivity
-            Intent intent = new Intent();
+        emailid = acct.getEmail();
 
+        fcref = db.collection("List").document(emailid).collection("Medicine List");
+
+
+        //Get today's day of the week
+        final Calendar calendar = Calendar.getInstance();
+        final int cDay = calendar.get(Calendar.DAY_OF_WEEK);  //get current day
+
+        fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                final ArrayList<Medicine> medList = new ArrayList<>();
+                for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
+                    Medicine med = ds.toObject(Medicine.class);
+                    List<Integer> days = med.getDays();
+                    if(days.contains(cDay)){
+                        medList.add(med);
+                    }
+                    //add to list here
+                }
+                adapter = new myAdapterClass(medList);
+                recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new myAdapterClass.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Toast.makeText(getContext(), " " + medList.get(position).getName(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), AddMedicine.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("medname", medList.get(position).getName());
+                        intent.putExtras(bundle);
+                        intent.putExtra("Activity", "DailyMedsFragment");
+                        startActivityForResult(intent, 3);
+                    }
+                });
             }
         });
 
-    alert.show();
-    * */
+    }
 
 }
