@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class DailyMedsFragment extends Fragment {
     myAdapterClass adapter;
     GoogleSignInAccount acct;
     View v;
+    CardView toadysList, exercises;
 
     @Nullable
     @Override
@@ -66,9 +68,30 @@ public class DailyMedsFragment extends Fragment {
 
         acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
-            updateUI();
+            //updateUI();
+
+            toadysList = v.findViewById(R.id.Todayslist);
+            exercises = v.findViewById(R.id.exercises);
+
+            toadysList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateUI();
+                }
+            });
+
+            exercises.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateUIforExercise();
+                }
+            });
         }
         return v;
+    }
+
+    public void updateUIforExercise(){
+        
     }
 
     @Override
