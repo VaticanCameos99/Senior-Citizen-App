@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import sun.bob.mcalendarview.MCalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -53,6 +57,8 @@ public class CalendarFragment extends Fragment {
 
     //Firebase Database reference object
     DatabaseReference databaseMedicines;
+    RecyclerView recyclerView;
+    myAdapterClass adapter;
 
     //for firestore
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
@@ -67,6 +73,8 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        recyclerView = v.findViewById(R.id.CalendarFragmentRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
         //Get user Account
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
@@ -79,7 +87,6 @@ public class CalendarFragment extends Fragment {
 
 
         //Get email Id and Name -->(Send bundle) --> Save in AddMedicine
-        mList = v.findViewById(R.id.medList);
         calendarView = (MCalendarView) v.findViewById(R.id.calendar);
         calendarView.setOnDateClickListener(new OnDateClickListener() {
             @Override
@@ -89,27 +96,43 @@ public class CalendarFragment extends Fragment {
                 fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        int cDate = calendar.get(Calendar.DATE); //get current Date
-                        int cDay = calendar.get(Calendar.DAY_OF_WEEK);  //get current day
-                        int difference;
-                        difference = date.getDay() - cDate;
 
-                        Integer newDay = (cDay + difference)% 7;
-                        if (newDay == 0)
-                            newDay = 7;
-
-                        ArrayList<Medicine> medList = new ArrayList<>();
+                        //Toast.makeText(getActivity(), "On Success", Toast.LENGTH_LONG).show();
+                        final ArrayList<Medicine> medList = new ArrayList<>();
 
                         for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
                             Medicine med = ds.toObject(Medicine.class);
                             List<Integer> days = med.getDays();
-                            if(days.contains(newDay)){
-                                medList.add(med);
+                            ArrayList<Date> selectedDates = med.getSelecteddates();
+                            SimpleDateFormat sdfdate = new SimpleDateFormat("dd");
+                            SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
+                            //SimpleDateFormat sdfDay = new SimpleDateFormat("EEEE");
+
+                            for(Date sdate: selectedDates){
+                                int sdatemonth = Integer.parseInt(sdfMonth.format(sdate));
+                                int sdatedate = Integer.parseInt(sdfdate.format(sdate));
+                                int sdateday = getDay(sdate);
+                                if(sdatemonth == date.getMonth() && sdatedate == date.getDay() && days.contains(sdateday)){
+                                    medList.add(med);
+                                }
                             }
                         }
 
                         //display contents of medList in ListView
-                        Toast.makeText(getActivity(), "" + medList.size(), Toast.LENGTH_LONG).show();
+                        adapter = new myAdapterClass(medList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.setOnItemClickListener(new myAdapterClass.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                Toast.makeText(getContext(), " " + medList.get(position).getName(), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getActivity(), AddMedicine.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("medname", medList.get(position).getName());
+                                intent.putExtras(bundle);
+                                intent.putExtra("Activity", "DailyMedsFragment");
+                                startActivityForResult(intent, 3);
+                            }
+                        });
                     }
                 });
 
@@ -141,40 +164,7 @@ public class CalendarFragment extends Fragment {
 
     //Mark previously stored Dates
     public void markDates(){
-        fcref = fdb.collection("List").document(emailid).collection("Medicine List");
-        fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot ds : queryDocumentSnapshots){
-                    //each documentSnapshot represents one Medicine Object from "Medicine List" Collection
-                    Medicine medicine = ds.toObject(Medicine.class);
-                    List<Integer> selectedDays = medicine.getDays();
-
-                    final Calendar calendar = Calendar.getInstance();
-                    calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
-
-                    for (int j = 0; j < selectedDays.size(); j++){
-                        int k = selectedDays.get(j); //get required Day of week
-                        int cDay = calendar.get(Calendar.DATE); //get current Date
-                        int day = calendar.get(Calendar.DAY_OF_WEEK); //get current day
-                        int nextDate;
-
-                        if(day < k){
-                            nextDate = cDay + k - 1;    //for nextDate day in this week
-                        }
-                        else {
-                            nextDate = cDay + (7 - day + k); //for nextDate day in next week
-                        }
-
-                        for(int i = nextDate; i < calendar.getMaximum(Calendar.DAY_OF_MONTH); i = i+7){
-                            calendarView.markDate(
-                                    new DateData(2019, 10, i).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN))
-                            );
-                        }
-                    }
-                }
-            }
-        });
+        updateCalendar();
     }
 
 
@@ -188,45 +178,56 @@ public class CalendarFragment extends Fragment {
                 Toast.makeText(getActivity(), medname, Toast.LENGTH_LONG).show();
 
                 final Calendar calendar = Calendar.getInstance();
-                calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
-                fref = fdb.collection("List").document(emailid).collection("Medicine List").document(medname);
-                fref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()){
-                            Medicine medicine = documentSnapshot.toObject(Medicine.class);
-                            SimpleDateFormat sdfday = new SimpleDateFormat("dd");
-                            ArrayList<Date> selectedDates = medicine.getSelecteddates();
-                            List<Integer> selectedDays = medicine.getDays();
-                            int i = 0;
-                            for(Date date : selectedDates){
-                                int dateDayint = getDay(date);
-                                if(dateDayint == selectedDays.get(i)){
-                                    i++;
-                                    if(i == selectedDays.size()){
-                                        i = 0;
-                                    }
-
-                                    int day = Integer.parseInt(sdfday.format(date));
-                                    calendarView.markDate(
-                                             new DateData(2019, 10, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.rgb(52, 152, 187)))
-                                    );
-                                }
-                            }
-                        }
-                    }
-                });
+                updateCalendar();
             }
         }
+    }
+
+    public void updateCalendar(){
+        fcref = fdb.collection("List").document(emailid).collection("Medicine List");
+        fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                    Medicine medicine = documentSnapshot.toObject(Medicine.class);
+                    ArrayList<Date> selectedDates = medicine.getSelecteddates();
+                    List<Integer> days = medicine.getDays();
+
+                    SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
+                    int i = 0;
+                    for(Date date : selectedDates){
+                        int dateDayint = getDay(date);
+                        if(dateDayint == days.get(i)){
+                            i++;
+                            if(i == days.size())
+                                i = 0;
+
+                            int day = Integer.parseInt(sdfDay.format(date));
+                            calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
+                            calendarView.markDate(
+                                    new DateData(2019, 10, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.GREEN))
+                            );
+                        }
+                    }
+                }
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failure rendering data", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public int getDay(Date d){
         String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"};
 
-        SimpleDateFormat sdfday = new SimpleDateFormat("EEEE");
+        SimpleDateFormat sdfday = new SimpleDateFormat("EE");
         String dday = sdfday.format(d);
         for(int i = 0; i < DaysOfWeek.length; i++){
-            if(DaysOfWeek[i] == dday){
+            String dayow = DaysOfWeek[i];
+            if(dayow.equals(dday)){
                 return i+1;
             }
         }

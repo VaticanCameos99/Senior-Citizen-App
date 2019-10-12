@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,53 +9,61 @@
     android:weightSum="10"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    <ImageView
-        android:id="@+id/titleBar"
-        android:background="@drawable/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"/>
-
-        <TextView
-            android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/titleBar"
-            android:layout_gravity="bottom|left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Calendar"
-            android:textColor="#2C3E50"
-            android:textSize="40dp"
+            android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/titleBar"
+            android:background="@drawable/titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/titleBar"
+                android:layout_gravity="bottom|left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Calendar"
+                android:textColor="#2C3E50"
+                android:textSize="40dp"
+                />
+
+        </RelativeLayout>
+
+        <sun.bob.mcalendarview.MCalendarView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            tools:context=".CalendarFragment"
+            android:id="@+id/calendar"
+            android:layout_margin="15dp"
+            android:layout_weight="5"
+            android:layout_gravity="center"
             />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/AddMedicine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add a medicine"
+            android:layout_gravity="center"
+            android:layout_below="@+id/calendar"/>
 
-    <sun.bob.mcalendarview.MCalendarView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        tools:context=".CalendarFragment"
-        android:id="@+id/calendar"
-        android:layout_margin="15dp"
-        android:layout_weight="5"
-        android:layout_gravity="center"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/CalendarFragmentRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_below="@+id/titleBar"
+            />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/AddMedicine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add a medicine"
-        android:layout_gravity="center"
-        android:layout_below="@+id/calendar"/>
-
-    <ListView
-        android:id="@+id/medList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-
-</LinearLayout>
+</ScrollView>

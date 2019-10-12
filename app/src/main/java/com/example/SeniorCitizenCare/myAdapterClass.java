@@ -41,7 +41,6 @@ public class myAdapterClass extends RecyclerView.Adapter <myAdapterClass.MyViewH
         Medicine medicine = mList.get(position);
 
         holder.MedicineName.setText(medicine.getName());
-        //holder.Time.setText(medicine.getTime());
     }
 
     @Override
@@ -51,12 +50,11 @@ public class myAdapterClass extends RecyclerView.Adapter <myAdapterClass.MyViewH
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView MedicineName, Time;
+        TextView MedicineName;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             MedicineName = itemView.findViewById(R.id.MedicineName);
-            Time = itemView.findViewById(R.id.Time);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
