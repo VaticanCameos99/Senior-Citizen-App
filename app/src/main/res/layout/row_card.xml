@@ -1,51 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="4dp">
+    app:cardBackgroundColor="#ECF0F1"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    app:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/emergencycard" />
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="2dp"
-            android:id="@+id/imageView"/>
+            android:layout_below="@id/textView3"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10dp"
+            android:padding="2dp" />
 
         <TextView
+            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textView3"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imageView"
             android:text="Line 1"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:id="@+id/textView1"/>
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Line 2"
-            android:textSize="15sp"
             android:layout_below="@+id/textView1"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/imageView"
-            android:layout_marginLeft="8dp"
-            android:id="@+id/textView2"/>
+            android:text="Line 2"
+            android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Relation"
-            android:id="@+id/textView3"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
-            android:textStyle="italic"
-            android:layout_toRightOf="@+id/textView1"/>
+            android:text="Relation"
+            android:textStyle="italic" />
 
     </RelativeLayout>
 

@@ -31,7 +31,7 @@
         android:scrollbars="vertical"
         android:layout_below="@+id/mySearch"
         android:layout_alignStart="@+id/titleBar"
-        android:background="@android:color/darker_gray"
+        android:background="#ECF0F1"
         />
 
     <EditText

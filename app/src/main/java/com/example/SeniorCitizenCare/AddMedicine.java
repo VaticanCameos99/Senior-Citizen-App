@@ -95,31 +95,31 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
 
             databaseMedicines = FirebaseDatabase.getInstance().getReference("Medicines");
 
-            time = findViewById(R.id.time);
+//            time = findViewById(R.id.time);
+//
+//            dialog = LinearTimePickerDialog.Builder.with(this)
+//                    .setShowTutorial(showTutorial)
+//                    .setButtonCallback(new LinearTimePickerDialog.ButtonCallback() {
+//                        @Override
+//                        public void onPositive(DialogInterface dialog, int hour, int minutes) {
+//                            Toast.makeText(AddMedicine.this, "" + hour + ":" + minutes, Toast.LENGTH_SHORT).show();
+//                            t = "" + hour + ":" + minutes;
+//
+//                            showTutorial = false;
+//                        }
+//
+//                        @Override
+//                        public void onNegative(DialogInterface dialog) {
+//
+//                        }
+//                    }).build();
 
-            dialog = LinearTimePickerDialog.Builder.with(this)
-                    .setShowTutorial(showTutorial)
-                    .setButtonCallback(new LinearTimePickerDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(DialogInterface dialog, int hour, int minutes) {
-                            Toast.makeText(AddMedicine.this, "" + hour + ":" + minutes, Toast.LENGTH_SHORT).show();
-                            t = "" + hour + ":" + minutes;
-
-                            showTutorial = false;
-                        }
-
-                        @Override
-                        public void onNegative(DialogInterface dialog) {
-
-                        }
-                    }).build();
-
-            time.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.show();
-                }
-            });
+//            time.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog.show();
+//                }
+//            });
         }
         else if(act.equals("DailyMedsFragment")){
             delete.setVisibility(View.VISIBLE);
