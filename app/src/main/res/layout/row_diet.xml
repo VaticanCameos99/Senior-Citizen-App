@@ -11,6 +11,6 @@
         android:padding="15dp"
         android:text="Diet Name"
         android:layout_marginLeft="30dp"
-        android:background="@drawable/medicinebg"
+        android:background="@drawable/morning"
         />
 </androidx.cardview.widget.CardView>

@@ -5,7 +5,7 @@
         android:title="Calendar"/>
     <item android:id="@+id/nav_daily_meds"
         android:icon="@drawable/meds"
-        android:title="Today"/>
+        android:title="Dashboard"/>
     <item android:id="@+id/nav_emergency_contact"
         android:icon="@drawable/emergency"
         android:title="Emergency Contact"/>
