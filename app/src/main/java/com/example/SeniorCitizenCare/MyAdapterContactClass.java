@@ -85,7 +85,7 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
                 }
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(mListener!=null){
