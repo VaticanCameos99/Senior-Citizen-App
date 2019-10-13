@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textView3"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_toRightOf="@+id/imageView"
             android:text="Line 1"
             android:textColor="@android:color/black"
@@ -58,7 +58,9 @@
             android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="Relation"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textColor="#FFFFFF"
+            />
 
     </RelativeLayout>
 
