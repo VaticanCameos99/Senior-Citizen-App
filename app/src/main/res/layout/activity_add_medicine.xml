@@ -45,9 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Name of medicine"
-            android:gravity="start|center"
+            android:textAlignment="center"
             android:background="@drawable/medicinebg"
-            android:ellipsize="start"
+
             />
 
         <!--Try to display the selected time -->
@@ -65,11 +65,11 @@
 
         <com.dpro.widgets.WeekdaysPicker
             android:id="@+id/weekdays"
+            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:sunday_first_day="true"
             android:layout_below="@id/textWeekdayPicker"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:background="@drawable/days"
             />
@@ -89,6 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DATE RANGE"
+            android:textAlignment="center"
             android:layout_below="@+id/textDatePicker"
             android:background="@drawable/datepicker"
             />
@@ -166,10 +167,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete Medicine"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom|left"
                 android:visibility="invisible"
                 android:onClick="DeleteMedicine"
+                android:background="@drawable/datepicker"
                 />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveMedicine"

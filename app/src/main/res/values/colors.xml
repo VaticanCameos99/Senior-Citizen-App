@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#3498DB</color>
+    <color name="colorPrimaryDark">#2C3E50</color>
+    <color name="colorAccent">#E74C3C</color>
     <color name="dayPressed">#303F9F</color>
     <color name="daySelected">#3F51B5</color>
-    <color name="dayDeselected">@android:color/darker_gray</color>
+    <color name="dayDeselected">#ECF0F1</color>
     <color name="background">#ECF0F1</color>
-    <color name="CalendarHighlight">#3498bb</color>
+    <color name="CalendarHighlight">#E74C3C</color>
 </resources>

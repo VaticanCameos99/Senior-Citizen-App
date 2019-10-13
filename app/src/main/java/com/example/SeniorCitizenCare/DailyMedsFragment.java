@@ -151,9 +151,9 @@ public class DailyMedsFragment extends Fragment {
     final static int RQS_1 = 1;
     private void setAlarm(Context context , Calendar targetCal) {
 
-        info.setText("\n\n***\n"
-                + "Alarm is set@ " + targetCal.getTime() + "\n"
-                + "***\n");
+//        info.setText("\n\n***\n"
+//                + "Alarm is set@ " + targetCal.getTime() + "\n"
+//                + "***\n");
 
         Intent intent = new Intent(context , AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
