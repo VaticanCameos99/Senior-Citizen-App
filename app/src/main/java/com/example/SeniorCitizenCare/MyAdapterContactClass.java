@@ -19,6 +19,7 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
 
     public interface OnItemClickListener{
         void onItemClick(int position);
+        void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -61,6 +62,7 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
         TextView mName;
         TextView mNumber;
         TextView mRelation;
+        ImageView mDelete;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +71,7 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
             mName = itemView.findViewById(R.id.textView1);
             mNumber = itemView.findViewById(R.id.textView2);
             mRelation = itemView.findViewById(R.id.textView3);
+            mDelete = itemView.findViewById(R.id.deleteContact);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +80,18 @@ public class MyAdapterContactClass extends RecyclerView.Adapter<MyAdapterContact
                         int position = getAdapterPosition();
                         if(position!=RecyclerView.NO_POSITION){
                             mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            mListener.onDeleteClick(position);
                         }
                     }
                 }

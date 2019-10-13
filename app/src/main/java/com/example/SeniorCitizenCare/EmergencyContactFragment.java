@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,12 +39,14 @@ public class EmergencyContactFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<ContactClass> list;
     MyAdapterContactClass adapter;
+
     private EditText editText;
     FloatingActionButton fab;
 
     private String emailId;
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
+    private DocumentReference documentReference;
 
     @Nullable
     @Override
@@ -78,14 +82,29 @@ public class EmergencyContactFragment extends Fragment {
         adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-            String number = list.get(position).mNumber;
+                String number = list.get(position).mNumber;
 
-            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
 
-            }else{
-                String dial = "tel:" + number;
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+                }else{
+                    String dial = "tel:" + number;
+                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+                }
             }
+
+            @Override
+            public void onDeleteClick(final int position) {
+                documentReference = fdb.collection("List").document(emailId)
+                        .collection("Contact List").document(list.get(position).getmName());
+
+                documentReference.delete().addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                                Log.i("Contact", "Failed to Delete");                    }
+                });
+
+                list.remove(position);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -117,7 +136,7 @@ public class EmergencyContactFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                int contactImage = data.getIntExtra("contactImage",0);
+                int contactImage = data.getIntExtra("contactImage",R.drawable.ic_person);
                 String contactName = data.getStringExtra("contactName");
                 String contactNumber = data.getStringExtra("contactNumber");
                 String contactRelation = data.getStringExtra("contactRelation");

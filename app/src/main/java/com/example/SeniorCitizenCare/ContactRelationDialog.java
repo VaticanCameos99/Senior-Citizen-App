@@ -25,7 +25,6 @@ public class ContactRelationDialog extends DialogFragment {
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), options[i], Toast.LENGTH_SHORT).show();
                         listener.onClick(options[i]);
                     }
                 });
