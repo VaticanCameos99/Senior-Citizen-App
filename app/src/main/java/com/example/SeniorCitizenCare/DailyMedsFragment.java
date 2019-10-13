@@ -48,6 +48,7 @@ public class DailyMedsFragment extends Fragment {
     GoogleSignInAccount acct;
     View v;
     CardView toadysList, exercises, diet, yourMedList;
+    TextView exerciseGrid, allMedsGrid, dietGrid, todayGrid;
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
@@ -82,11 +83,19 @@ public class DailyMedsFragment extends Fragment {
             exercises = v.findViewById(R.id.exercises);
             diet = v.findViewById(R.id.diet);
             yourMedList = v.findViewById(R.id.YourMeds);
+            todayGrid = v.findViewById(R.id.gridToday);
+            exerciseGrid = v.findViewById(R.id.gridExercise);
+            dietGrid =v .findViewById(R.id.gridDiet);
+            allMedsGrid = v.findViewById(R.id.gridAllMeds);
 
             toadysList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updateUI();
+                    todayGrid.setBackgroundResource(R.drawable.todaygridclicked);
+                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
+                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
+                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -94,6 +103,10 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     updateUIForExercise();
+                    exerciseGrid.setBackgroundResource(R.drawable.exercisegridclicked);
+                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
+                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
+                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -101,6 +114,10 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Diet();
+                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
+                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
+                    dietGrid.setBackgroundResource(R.drawable.dietgridclicked);
+                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -108,6 +125,10 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     TotalMedList();
+                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgridclicked);
+                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
+                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
+                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
                 }
             });
         }
@@ -124,6 +145,7 @@ public class DailyMedsFragment extends Fragment {
     }
 
     public void updateUIForExercise(){
+
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

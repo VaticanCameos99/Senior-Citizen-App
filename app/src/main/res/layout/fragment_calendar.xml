@@ -40,7 +40,7 @@
 
         <sun.bob.mcalendarview.MCalendarView
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             tools:context=".CalendarFragment"
             android:id="@+id/calendar"
             android:layout_margin="15dp"
