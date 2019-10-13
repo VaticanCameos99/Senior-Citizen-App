@@ -43,7 +43,7 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
 
         populateList();
         buildRecyclerView();
-//        addSearch();
+        addSearch();
     }
 
     @Override
