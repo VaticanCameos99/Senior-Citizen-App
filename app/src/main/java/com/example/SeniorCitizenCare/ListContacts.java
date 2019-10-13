@@ -25,10 +25,8 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
     public RecyclerView recyclerView;
     public EditText editText;
 
-//    public ArrayList<ContactClass> list,temp,listFull;
     public ArrayList<ContactClassSmall> mList,mTemp,mListFull;
 
-//    public MyAdapterContactClass adapter;
     public MyAdapterContactSmallClass adapterContactSmallClass;
     FloatingActionButton fab;
     int currPos=-1;
@@ -51,10 +49,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
         Log.i("Relation", relation + " established");
         Log.i("Pos", Integer.toString(currPos));
         Intent resultIntent = new Intent();
-//        resultIntent.putExtra("contactImage", list.get(currPos).mImageResource);
-//        resultIntent.putExtra("contactName", list.get(currPos).mName);
-//        resultIntent.putExtra("contactNumber", list.get(currPos).mNumber);
-
 
         resultIntent.putExtra("contactImage", mList.get(currPos).mImageResource);
         resultIntent.putExtra("contactName", mList.get(currPos).mName);
@@ -66,7 +60,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
         finish();
     }
 
-//    public ArrayList<ContactClass> getContacts(){
     public ArrayList<ContactClassSmall> getContacts(){
 
             ArrayList<ContactClass> myContacts = new ArrayList<>();
@@ -78,11 +71,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
 
         while(cursor.moveToNext()){
 
-//            myContacts.add(new ContactClass(0,
-//                    cursor.getString(cursor.getColumnIndex((ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))),
-//                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), null));
-
-
             mContacts.add(new ContactClassSmall(0,
                     cursor.getString(cursor.getColumnIndex((ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))),
                     cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))));
@@ -90,30 +78,18 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
         }
         cursor.close();
 
-//        return myContacts;
         return mContacts;
     }
 
     public void populateList(){
-//        list = new ArrayList<>();
-//        listFull = new ArrayList<>();
-
         mList = new ArrayList<>();
         mListFull= new ArrayList<>();
-
-//        temp = getContacts();
-//
-//        for(int j=0; j<temp.size(); j++){
-//            list.add(new ContactClass((R.drawable.ic_person), temp.get(j).mName, temp.get(j).mNumber,null));
-//        }
-
         mTemp = getContacts();
 
         for(int j=0; j<mTemp.size(); j++){
             mList.add(new ContactClassSmall((R.drawable.ic_person), mTemp.get(j).mName, mTemp.get(j).mNumber));
         }
 
-//        listFull = new ArrayList<>(list);
         mListFull = new ArrayList<>(mList);
     }
 
@@ -121,21 +97,9 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
         recyclerView = (RecyclerView) findViewById(R.id.emergencyRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//        adapter = new MyAdapterContactClass(list);
         adapterContactSmallClass = new MyAdapterContactSmallClass(mList);
 
         recyclerView.setAdapter(adapterContactSmallClass);
-
-        //TODO
-//        adapter.setOnItemClickListener(new MyAdapterContactClass.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                currPos = position;
-//
-//                ContactRelationDialog dialog = new ContactRelationDialog();
-//                dialog.show(getSupportFragmentManager(), "dialog");
-//            }
-//        });
 
         adapterContactSmallClass.setOnItemClickListener(new MyAdapterContactSmallClass.OnItemClickListener() {
             @Override
@@ -165,11 +129,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
             @Override
             public void afterTextChanged(Editable editable) {
 
-                //Check for Backspace
-//                if(val-1 == editable.toString().length())
-//                    list = new ArrayList<>(listFull);
-//                filter(editable.toString());
-
                 if(val-1 == editable.toString().length())
                     mList = new ArrayList<>(mListFull);
                 filter(editable.toString());
@@ -184,16 +143,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
         ArrayList<ContactClassSmall>filteredList = new ArrayList<>();
 
         //Refresh List
-//        if(text == null || text.length()==0){
-//            list = new ArrayList<>(listFull);
-//            filteredList.addAll(list);
-//        }
-//        for(ContactClass item : list){
-//            if(item.getmName().toLowerCase().contains(text.toLowerCase())){
-//                filteredList.add(item);
-//            }
-//        }
-//
         if(text == null || text.length()==0){
             mList = new ArrayList<>(mListFull);
             filteredList.addAll(mListFull);
@@ -203,10 +152,6 @@ public class ListContacts extends AppCompatActivity implements ContactRelationDi
                 filteredList.add(item);
             }
         }
-
-
-//        adapter.filterList(filteredList);
-//        list = new ArrayList<>(filteredList);
 
         adapterContactSmallClass.filterList(filteredList);
         mList = new ArrayList<>(filteredList);

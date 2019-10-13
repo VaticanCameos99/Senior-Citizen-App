@@ -108,7 +108,6 @@ public class EmergencyContactFragment extends Fragment {
             }
         });
 
-//        return inflater.inflate(R.layout.fragment_emergency_contacts, container, false);
         return  v;
     }
 
