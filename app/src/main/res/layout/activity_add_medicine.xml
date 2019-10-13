@@ -71,7 +71,6 @@
             app:sunday_first_day="true"
             android:layout_below="@id/textWeekdayPicker"
             android:layout_gravity="center"
-            android:background="@drawable/days"
             />
 
     <TextView

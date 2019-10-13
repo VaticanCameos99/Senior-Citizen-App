@@ -48,7 +48,7 @@ public class DailyMedsFragment extends Fragment {
     GoogleSignInAccount acct;
     View v;
     CardView toadysList, exercises, diet, yourMedList;
-    TextView exerciseGrid, allMedsGrid, dietGrid, todayGrid;
+    TextView exerciseGrid, allMedsGrid, dietGrid, todayGrid, textBelow;
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
@@ -90,6 +90,7 @@ public class DailyMedsFragment extends Fragment {
             exerciseGrid = v.findViewById(R.id.gridExercise);
             dietGrid =v .findViewById(R.id.gridDiet);
             allMedsGrid = v.findViewById(R.id.gridAllMeds);
+            textBelow = v.findViewById(R.id.linkText);
 
             toadysList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,6 +100,7 @@ public class DailyMedsFragment extends Fragment {
                     exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
                     dietGrid.setBackgroundResource(R.drawable.dietgrid);
                     allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
+                    textBelow.setText("TODAY'S MEDICINES: ");
                 }
             });
 
@@ -110,6 +112,7 @@ public class DailyMedsFragment extends Fragment {
                     todayGrid.setBackgroundResource(R.drawable.todaygrid);
                     dietGrid.setBackgroundResource(R.drawable.dietgrid);
                     allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
+                    textBelow.setText("EXERCISES:");
                 }
             });
 
@@ -121,6 +124,7 @@ public class DailyMedsFragment extends Fragment {
                     exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
                     dietGrid.setBackgroundResource(R.drawable.dietgridclicked);
                     allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
+                    textBelow.setText("LINKS TO DIETS:");
                 }
             });
 
@@ -132,6 +136,7 @@ public class DailyMedsFragment extends Fragment {
                     todayGrid.setBackgroundResource(R.drawable.todaygrid);
                     exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
                     dietGrid.setBackgroundResource(R.drawable.dietgrid);
+                    textBelow.setText("ALL MEDICINES:");
                 }
             });
         }

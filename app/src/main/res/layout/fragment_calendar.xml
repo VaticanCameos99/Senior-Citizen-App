@@ -38,31 +38,48 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/calendarbg"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal">
         <sun.bob.mcalendarview.MCalendarView
+            android:layout_marginRight="8dp"
             android:layout_width="300dp"
             android:layout_height="400dp"
             tools:context=".CalendarFragment"
             android:id="@+id/calendar"
-            android:layout_margin="15dp"
-            android:layout_weight="5"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             />
-
+        </RelativeLayout>
         <Button
             android:id="@+id/AddMedicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add a medicine"
             android:layout_gravity="center"
-            android:layout_below="@+id/calendar"/>
+            android:layout_below="@+id/calendar"
+            android:background="@drawable/datepicker"
+            />
+
+        <TextView
+            android:id="@+id/listText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_marginLeft="35dp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/CalendarFragmentRecycler"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            android:layout_marginVertical="10dp"
+            android:layout_marginLeft="30dp"
             android:layout_below="@+id/titleBar"
+            android:background="@drawable/generalbg"
             />
     </LinearLayout>
 
