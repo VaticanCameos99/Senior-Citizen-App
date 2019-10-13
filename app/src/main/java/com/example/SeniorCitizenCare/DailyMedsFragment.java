@@ -48,13 +48,9 @@ public class DailyMedsFragment extends Fragment {
     GoogleSignInAccount acct;
     View v;
     CardView toadysList, exercises, diet, yourMedList;
-    TextView exerciseGrid, allMedsGrid, dietGrid, todayGrid;
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
-    
-    private MyAdapterDietClass adapterDietClass;
-    private ArrayList<String> dietList;
 
 
     @Nullable
@@ -86,19 +82,11 @@ public class DailyMedsFragment extends Fragment {
             exercises = v.findViewById(R.id.exercises);
             diet = v.findViewById(R.id.diet);
             yourMedList = v.findViewById(R.id.YourMeds);
-            todayGrid = v.findViewById(R.id.gridToday);
-            exerciseGrid = v.findViewById(R.id.gridExercise);
-            dietGrid =v .findViewById(R.id.gridDiet);
-            allMedsGrid = v.findViewById(R.id.gridAllMeds);
 
             toadysList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updateUI();
-                    todayGrid.setBackgroundResource(R.drawable.todaygridclicked);
-                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
-                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
-                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -106,10 +94,6 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     updateUIForExercise();
-                    exerciseGrid.setBackgroundResource(R.drawable.exercisegridclicked);
-                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
-                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
-                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -117,10 +101,6 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Diet();
-                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
-                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
-                    dietGrid.setBackgroundResource(R.drawable.dietgridclicked);
-                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgrid);
                 }
             });
 
@@ -128,10 +108,6 @@ public class DailyMedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     TotalMedList();
-                    allMedsGrid.setBackgroundResource(R.drawable.allmedsgridclicked);
-                    todayGrid.setBackgroundResource(R.drawable.todaygrid);
-                    exerciseGrid.setBackgroundResource(R.drawable.exercisegrid);
-                    dietGrid.setBackgroundResource(R.drawable.dietgrid);
                 }
             });
         }
@@ -143,56 +119,11 @@ public class DailyMedsFragment extends Fragment {
     }
 
     public void Diet(){
-        recyclerView = v.findViewById(R.id.DailyMedsRecycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        dietList = new ArrayList<>();
-        dietList.add("Diet for Diabetes");
-        dietList.add("Diet for Heart Issues");
-        dietList.add("Diet for Weight Gain");
-        dietList.add("Diet for Weight Loss");
-        dietList.add("Diet for Diarrhea");
-        dietList.add("Diet for Vomiting");
-        dietList.add("Diet for Acidity");
-
-        adapterDietClass = new MyAdapterDietClass(dietList);
-        recyclerView.setAdapter(adapterDietClass);
-
-        adapterDietClass.setOnItemClickListener(new MyAdapterDietClass.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                String dietName = dietList.get(position);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-
-                if(dietName=="Diet for Diabetes")
-                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/16-best-foods-for-diabetics#section1"));
-
-                if(dietName=="Diet for Heart Issues")
-                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/heart-healthy-foods"));
-
-                if(dietName=="Diet for Weight Gain")
-                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/18-foods-to-gain-weight"));
-
-                if(dietName=="Diet for Weight Loss")
-                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/20-most-weight-loss-friendly-foods"));
-
-                if(dietName=="Diet for Diarrhea")
-                    intent.setData(Uri.parse("https://www.healthline.com/health/what-to-eat-when-you-have-diarrhea"));
-
-                if(dietName=="Diet for Vomiting")
-                    intent.setData(Uri.parse("https://www.livestrong.com/article/330220-the-best-foods-to-eat-after-throwing-up/"));
-
-                if(dietName=="Diet for Acidity")
-                    intent.setData(Uri.parse("https://www.healthline.com/health/gerd/diet-nutrition"));
-
-                startActivity(intent);
-            }
-        });
-
+        Intent intent = new Intent(getContext(), DietActivity.class);
+        startActivity(intent);
     }
 
     public void updateUIForExercise(){
-
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -220,9 +151,9 @@ public class DailyMedsFragment extends Fragment {
     final static int RQS_1 = 1;
     private void setAlarm(Context context , Calendar targetCal) {
 
-//        info.setText("\n\n***\n"
-//                + "Alarm is set@ " + targetCal.getTime() + "\n"
-//                + "***\n");
+        info.setText("\n\n***\n"
+                + "Alarm is set@ " + targetCal.getTime() + "\n"
+                + "***\n");
 
         Intent intent = new Intent(context , AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
