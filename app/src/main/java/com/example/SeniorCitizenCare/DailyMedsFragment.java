@@ -1,5 +1,7 @@
 package com.example.SeniorCitizenCare;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+
 public class DailyMedsFragment extends Fragment {
     final int REQUEST_CODE = 3;
 
@@ -47,6 +51,7 @@ public class DailyMedsFragment extends Fragment {
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
+
 
     @Nullable
     @Override
@@ -142,6 +147,20 @@ public class DailyMedsFragment extends Fragment {
         updateUI();
     }
 
+    TextView info;
+    final static int RQS_1 = 1;
+    private void setAlarm(Context context , Calendar targetCal) {
+
+        info.setText("\n\n***\n"
+                + "Alarm is set@ " + targetCal.getTime() + "\n"
+                + "***\n");
+
+        Intent intent = new Intent(context , AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
+    }
+
     public void updateUI(){
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
@@ -158,6 +177,7 @@ public class DailyMedsFragment extends Fragment {
         fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Context context = getContext();
                 final ArrayList<Medicine> medList = new ArrayList<>();
                 for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
                     Medicine med = ds.toObject(Medicine.class);
@@ -167,6 +187,35 @@ public class DailyMedsFragment extends Fragment {
                     }
                     //add to list here
                 }
+
+                ArrayList<Integer> selectedTime;
+                Calendar cal = Calendar.getInstance();
+                for(Medicine mt : medList) {
+                    selectedTime = mt.getSelectedtimings();
+                    if(selectedTime.get(0) == 1) {            //before breakfast
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00);
+                    }
+                    else if(selectedTime.get(1) == 1) {     //after breakfast
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00);
+                    }
+                    else if(selectedTime.get(2) == 1) {     //before lunch
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30);
+                    }
+                    else if(selectedTime.get(3) == 1) {     //after lunch
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 13 ,  30);
+                    }
+                    else if(selectedTime.get(4) == 1) {     //afternoon
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30);
+                    }
+                    else if(selectedTime.get(5) == 1) {    //before dinner
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30);
+                    }
+                    else if(selectedTime.get(6) == 1) {    //after dinner
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00);
+                    }
+                }
+                setAlarm(context , cal);
+
                 adapter = new myAdapterClass(medList);
                 recyclerView.setAdapter(adapter);
 
@@ -184,7 +233,6 @@ public class DailyMedsFragment extends Fragment {
                 });
             }
         });
-
     }
 
     public void addYoga(){
