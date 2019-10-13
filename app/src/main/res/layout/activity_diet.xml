@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".DietActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dietRecyclerView"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        android:background="#ECF0F1"
+        />
 
 </RelativeLayout>
