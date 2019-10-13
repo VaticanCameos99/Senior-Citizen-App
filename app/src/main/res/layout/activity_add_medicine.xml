@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:hint="Name of medicine"
             android:background="@drawable/medicinebg"
-            android:textAlignment="center"
             />
 
         <!--Try to display the selected time -->
@@ -72,28 +71,42 @@
             android:layout_gravity="center"
             android:background="@drawable/days"
             />
+
+    <TextView
+        android:id="@+id/textDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RANGE OF DAYS"
+        android:layout_below="@id/weekdays"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        />
+
         <Button
             android:id="@+id/DatePicker2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="datepicker2"
-            android:layout_below="@+id/weekdays"
-            android:layout_gravity="center"
+            android:text="DATE RANGE"
+            android:layout_below="@+id/textDatePicker"
             android:background="@drawable/datepicker"
             />
 
+         <TextView
+        android:id="@+id/textTimings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TIMINGS"
+        android:layout_below="@id/DatePicker2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        />
+
         <LinearLayout
-            android:layout_margin="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/DatePicker2"
+            android:layout_below="@+id/textTimings"
             android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="Timings:"
-            />
 
         <CheckBox
             android:id="@+id/before_breakfast"
@@ -158,6 +171,7 @@
                 />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveMedicine"
+            app:backgroundTint="#E74C3C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
