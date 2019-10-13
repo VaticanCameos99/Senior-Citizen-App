@@ -114,7 +114,8 @@ public class DailyMedsFragment extends Fragment {
     }
 
     public void Diet(){
-
+        Intent intent = new Intent(getContext(), DietActivity.class);
+        startActivity(intent);
     }
 
     public void updateUIForExercise(){
@@ -128,8 +129,6 @@ public class DailyMedsFragment extends Fragment {
         yogaAdapter.setOnItemClickListener(new MyAdapterYogaClass.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                Toast.makeText(getContext(), yogaList.get(position).getmName(), Toast.LENGTH_SHORT).show();
-                String link = "http://www.google.com";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(yogaList.get(position).getmLink()));
                 startActivity(intent);
