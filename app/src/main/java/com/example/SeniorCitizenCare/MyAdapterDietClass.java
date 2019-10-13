@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MyAdapterDietClass extends RecyclerView.Adapter<MyAdapterDietClass.MyViewHolder> {
 
-    ArrayList<String> mList;//TODO
+    ArrayList<String> mList;
     OnItemClickListener mListener;
 
     public interface OnItemClickListener{
@@ -24,7 +24,6 @@ public class MyAdapterDietClass extends RecyclerView.Adapter<MyAdapterDietClass.
     }
 
     public MyAdapterDietClass(ArrayList<String> mList) {
-        //TODO
         this.mList = mList;
     }
 

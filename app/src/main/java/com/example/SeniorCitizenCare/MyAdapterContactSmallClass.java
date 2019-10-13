@@ -41,10 +41,6 @@ public class MyAdapterContactSmallClass extends RecyclerView.Adapter<MyAdapterCo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ContactClassSmall contact = mList.get(position);
 
-        //TODO
-//        if(holder==null){
-//            Log.i("Info", "Ugh");
-//        }
         holder.mContactImageView.setImageResource(contact.getmImageResource());
         holder.mContactName.setText(contact.getmName());
         holder.mContactNumber.setText(contact.getmNumber());

@@ -51,6 +51,9 @@ public class DailyMedsFragment extends Fragment {
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
+    
+    private MyAdapterDietClass adapterDietClass;
+    private ArrayList<String> dietList;
 
 
     @Nullable
@@ -119,8 +122,52 @@ public class DailyMedsFragment extends Fragment {
     }
 
     public void Diet(){
-        Intent intent = new Intent(getContext(), DietActivity.class);
-        startActivity(intent);
+        recyclerView = v.findViewById(R.id.DailyMedsRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        dietList = new ArrayList<>();
+        dietList.add("Diet for Diabetes");
+        dietList.add("Diet for Heart Issues");
+        dietList.add("Diet for Weight Gain");
+        dietList.add("Diet for Weight Loss");
+        dietList.add("Diet for Diarrhea");
+        dietList.add("Diet for Vomiting");
+        dietList.add("Diet for Acidity");
+
+        adapterDietClass = new MyAdapterDietClass(dietList);
+        recyclerView.setAdapter(adapterDietClass);
+
+        adapterDietClass.setOnItemClickListener(new MyAdapterDietClass.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String dietName = dietList.get(position);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                if(dietName=="Diet for Diabetes")
+                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/16-best-foods-for-diabetics#section1"));
+
+                if(dietName=="Diet for Heart Issues")
+                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/heart-healthy-foods"));
+
+                if(dietName=="Diet for Weight Gain")
+                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/18-foods-to-gain-weight"));
+
+                if(dietName=="Diet for Weight Loss")
+                    intent.setData(Uri.parse("https://www.healthline.com/nutrition/20-most-weight-loss-friendly-foods"));
+
+                if(dietName=="Diet for Diarrhea")
+                    intent.setData(Uri.parse("https://www.healthline.com/health/what-to-eat-when-you-have-diarrhea"));
+
+                if(dietName=="Diet for Vomiting")
+                    intent.setData(Uri.parse("https://www.livestrong.com/article/330220-the-best-foods-to-eat-after-throwing-up/"));
+
+                if(dietName=="Diet for Acidity")
+                    intent.setData(Uri.parse("https://www.healthline.com/health/gerd/diet-nutrition"));
+
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void updateUIForExercise(){
