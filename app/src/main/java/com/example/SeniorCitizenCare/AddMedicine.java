@@ -277,17 +277,18 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                 }
             }
 
+            ArrayList<Date> date2 = new ArrayList<>();
             //test this
-//            for(Date date: dates){
-//                int dateDayint = CalendarFragment.getDay(date);
-//                if(!selectedDays.contains(dateDayint)){
-//                    dates.remove(date);
-//                }
-//            }
+            for(Date date: dates){
+                int dateDayint = CalendarFragment.getDay(date);
+                if(selectedDays.contains(dateDayint)){
+                   date2.add(date);
+                }
+            }
 
             //for Firestore
             if (!TextUtils.isEmpty(name) && !dates.isEmpty() && !selectedDays.isEmpty() && !timings.isEmpty()) {
-                Medicine medicine = new Medicine(name, dates, selectedDays, timings);
+                Medicine medicine = new Medicine(name, date2, selectedDays, timings);
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -195,6 +195,7 @@ public class CalendarFragment extends Fragment {
                     List<Integer> days = medicine.getDays();
 
                     SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
+                    SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
                     int i = 0;
                     for(Date date : selectedDates){
                         int dateDayint = getDay(date);
@@ -204,9 +205,10 @@ public class CalendarFragment extends Fragment {
                                 i = 0;
 
                             int day = Integer.parseInt(sdfDay.format(date));
+                            int month = Integer.parseInt(sdfMonth.format(date));
                             calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
                             calendarView.markDate(
-                                    new DateData(2019, 10, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.GREEN))
+                                    new DateData(2019, month, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.GREEN))
                             );
                         }
                     }
