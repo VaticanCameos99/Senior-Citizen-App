@@ -1,5 +1,7 @@
 package com.example.SeniorCitizenCare;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 
 public class DailyMedsFragment extends Fragment {
     final int REQUEST_CODE = 3;
@@ -256,6 +258,21 @@ public class DailyMedsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         updateUI();
+    }
+
+    final static int RQS_1 = 1;
+    private void setAlarm(Context context , ArrayList<Calendar> targetCal) {
+
+//        info.setText("\n\n***\n"
+//                + "Alarm is set@ " + targetCal.getTime() + "\n"
+//                + "***\n");
+
+        Intent intent = new Intent(context , AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        for(Calendar ct : targetCal) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
+        }
     }
 
     public void updateUI(){
