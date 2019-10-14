@@ -1,7 +1,5 @@
 package com.example.SeniorCitizenCare;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 
 public class DailyMedsFragment extends Fragment {
     final int REQUEST_CODE = 3;
@@ -260,21 +258,6 @@ public class DailyMedsFragment extends Fragment {
         updateUI();
     }
 
-    final static int RQS_1 = 1;
-    private void setAlarm(Context context , ArrayList<Calendar> targetCal) {
-
-//        info.setText("\n\n***\n"
-//                + "Alarm is set@ " + targetCal.getTime() + "\n"
-//                + "***\n");
-
-        Intent intent = new Intent(context , AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        for(Calendar ct : targetCal) {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
-        }
-    }
-
     public void updateUI(){
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));   //TODO : Check this
@@ -305,52 +288,32 @@ public class DailyMedsFragment extends Fragment {
                     //add to list here
                 }
 
-                Calendar current = Calendar.getInstance();
                 ArrayList<Integer> selectedTime;
-                ArrayList<Calendar> calList;
-                calList = null;
                 for(Medicine mt : medList) {
-                    Calendar cal = Calendar.getInstance();
                     selectedTime = mt.getSelectedtimings();
                     if(selectedTime.get(0) == 1) {      //before breakfast
                         morning.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(1) == 1) {     //after breakfast
                         morning.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(2) == 1) {     //before lunch
                         morning.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(3) == 1) {     //after lunch
                         afternoon.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 14 ,  00 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(4) == 1) {     //afternoon
                         afternoon.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(5) == 1) {    //before dinner
                         evening.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30 , 00);
-                        calList.add(cal);
                     }
                     if(selectedTime.get(6) == 1) {    //after dinner
                         evening.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00 , 00);
-                        calList.add(cal);
                     }
                 }
-//                if(cal.compareTo(current) > 0) {
-                    setAlarm(context , calList);
-                //}
+
                 final ArrayList<Medicine> finalMedList = new ArrayList<>();
                 finalMedList.addAll(morning);
                 finalMedList.addAll(afternoon);
