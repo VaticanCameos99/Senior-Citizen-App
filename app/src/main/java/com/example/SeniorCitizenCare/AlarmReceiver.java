@@ -14,6 +14,9 @@ public class AlarmReceiver extends  BroadcastReceiver {
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if(notification == null) {
             notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if(notification == null) {
+                notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            }
         }
         Ringtone r = RingtoneManager.getRingtone(context ,  notification);
         r.play();

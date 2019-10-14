@@ -216,7 +216,6 @@ public class DailyMedsFragment extends Fragment {
         updateUI();
     }
 
-    TextView info;
     final static int RQS_1 = 1;
     private void setAlarm(Context context , Calendar targetCal) {
 
@@ -257,33 +256,36 @@ public class DailyMedsFragment extends Fragment {
                     //add to list here
                 }
 
+                Calendar current = Calendar.getInstance();
                 ArrayList<Integer> selectedTime;
                 Calendar cal = Calendar.getInstance();
                 for(Medicine mt : medList) {
                     selectedTime = mt.getSelectedtimings();
                     if(selectedTime.get(0) == 1) {            //before breakfast
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00 , 00);
                     }
                     else if(selectedTime.get(1) == 1) {     //after breakfast
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00 , 00);
                     }
                     else if(selectedTime.get(2) == 1) {     //before lunch
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30 , 00);
                     }
                     else if(selectedTime.get(3) == 1) {     //after lunch
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 13 ,  30);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 13 ,  30 , 00);
                     }
                     else if(selectedTime.get(4) == 1) {     //afternoon
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30 , 00);
                     }
                     else if(selectedTime.get(5) == 1) {    //before dinner
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30 , 00);
                     }
                     else if(selectedTime.get(6) == 1) {    //after dinner
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00 , 00);
                     }
                 }
-                setAlarm(context , cal);
+                if(cal.compareTo(current) > 0) {
+                    setAlarm(context , cal);
+                }
 
                 adapter = new myAdapterClass(medList);
                 recyclerView.setAdapter(adapter);
