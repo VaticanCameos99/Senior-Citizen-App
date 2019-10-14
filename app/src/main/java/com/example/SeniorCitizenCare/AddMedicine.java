@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -42,6 +46,7 @@ import com.savvi.rangedatepicker.CalendarPickerView;
 import net.steamcrafted.lineartimepicker.dialog.LinearTimePickerDialog;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -292,7 +297,54 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
             if (!TextUtils.isEmpty(name) && dates != null && !selectedDays.isEmpty() && !timings.isEmpty()) {
                 Medicine medicine = new Medicine(name, date2, selectedDays, timings);
 
-
+            //add alarm here
+                final int RQS_1 = 1;
+                ArrayList<Calendar> calList;
+                calList = null;
+                for(Date date : date2) {
+                    SimpleDateFormat sdfdate = new SimpleDateFormat("dd");
+                    SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
+                    SimpleDateFormat sdfYear = new SimpleDateFormat("YYYY");
+                    int mon = Integer.parseInt(sdfMonth.format(date));
+                    int dt = Integer.parseInt(sdfdate.format(date));
+                    int yr = Integer.parseInt(sdfdate.format(date));
+                    Calendar cal = Calendar.getInstance();
+                    if(timings.get(0) == 1) {      //before breakfast
+                        cal.set(yr , mon , dt , 7 ,  00 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(1) == 1) {     //after breakfast
+                        cal.set(yr , mon , dt ,  9 ,  00 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(2) == 1) {     //before lunch
+                        cal.set(yr , mon , dt ,  11 ,  30 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(3) == 1) {     //after lunch
+                        cal.set(yr , mon , dt ,  14 ,  00 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(4) == 1) {     //afternoon
+                        cal.set(yr , mon , dt ,  16 ,  30 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(5) == 1) {    //before dinner
+                        cal.set(yr , mon , dt ,  19 ,  30 , 00);
+                        calList.add(cal);
+                    }
+                    if(timings.get(6) == 1) {    //after dinner
+                        cal.set(yr , mon , dt ,  22 ,  00 , 00);
+                        calList.add(cal);
+                    }
+                }
+                Intent intent = new Intent(AddMedicine.this , AlarmReceiver.class);
+                intent.putExtra("Medicine Name", name);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddMedicine.this, RQS_1, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) AddMedicine.this.getSystemService(Context.ALARM_SERVICE);
+                for(Calendar ct : calList) {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
+                }
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
