@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    app:cardPreventCornerOverlap="false"
     android:layout_marginBottom="4dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    >
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -37,8 +41,6 @@
             android:layout_toRightOf="@+id/imageContact"
             android:layout_marginLeft="8dp"
             android:id="@+id/textContactNumber"/>
-
-
     </RelativeLayout>
 
 

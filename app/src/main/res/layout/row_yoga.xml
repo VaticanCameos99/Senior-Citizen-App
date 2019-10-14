@@ -4,18 +4,16 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="4dp"
-    app:cardCornerRadius="4dp">
+    android:layout_marginRight="35dp"
+    android:layout_marginLeft="35dp"
+    app:cardCornerRadius="4dp"
+    >
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:padding="2dp"
-            android:id="@+id/yogaImageView"/>
+        android:padding="5dp"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,7 +23,6 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/yogaImageView"
             android:id="@+id/yogaTitle"/>
 
         <TextView
@@ -33,8 +30,8 @@
             android:layout_height="wrap_content"
             android:text="Description"
             android:textSize="15sp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@+id/yogaTitle"
-            android:layout_toRightOf="@+id/yogaImageView"
             android:id="@+id/yogaDescription"/>
 
 

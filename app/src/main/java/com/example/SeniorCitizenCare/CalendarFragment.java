@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import sun.bob.mcalendarview.MCalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,6 +60,7 @@ public class CalendarFragment extends Fragment {
     DatabaseReference databaseMedicines;
     RecyclerView recyclerView;
     myAdapterClass adapter;
+    TextView listText;
 
     //for firestore
     private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
@@ -91,6 +93,8 @@ public class CalendarFragment extends Fragment {
         calendarView.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, final DateData date) {
+                listText = v.findViewById(R.id.listText);
+                listText.setText("MEDICINES:");
                 final Calendar calendar = Calendar.getInstance();
                 fcref = fdb.collection("List").document(emailid).collection("Medicine List");
                 fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -208,7 +212,7 @@ public class CalendarFragment extends Fragment {
                             int month = Integer.parseInt(sdfMonth.format(date));
                             calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);
                             calendarView.markDate(
-                                    new DateData(2019, month, day).setMarkStyle(new MarkStyle(MarkStyle.RIGHTSIDEBAR, Color.GREEN))
+                                    new DateData(2019, month, day).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.rgb(231, 76, 60)))
                             );
                         }
                     }

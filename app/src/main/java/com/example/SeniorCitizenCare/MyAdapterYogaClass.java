@@ -40,7 +40,6 @@ public class MyAdapterYogaClass extends RecyclerView.Adapter<MyAdapterYogaClass.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         YogaClass yoga = mList.get(position);
 
-        holder.mYogaImageView.setImageResource(yoga.getmImageResource());
         holder.mYogaTitle.setText(yoga.getmName());
         holder.mYogaDescription.setText(yoga.getmDescription());
     }
@@ -52,14 +51,12 @@ public class MyAdapterYogaClass extends RecyclerView.Adapter<MyAdapterYogaClass.
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView mYogaImageView;
         TextView mYogaTitle;
         TextView mYogaDescription;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mYogaImageView = itemView.findViewById(R.id.yogaImageView);
             mYogaTitle = itemView.findViewById(R.id.yogaTitle);
             mYogaDescription = itemView.findViewById(R.id.yogaDescription);
 
