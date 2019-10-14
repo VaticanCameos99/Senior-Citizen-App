@@ -139,7 +139,35 @@ public class DailyMedsFragment extends Fragment {
     }
 
     public void TotalMedList(){
+        emailid = acct.getEmail();
+        recyclerView = v.findViewById(R.id.DailyMedsRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        final ArrayList<Medicine> totalMedList = new ArrayList<>();
+        fcref = db.collection("List").document(emailid).collection("Medicine List");
+        fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot ds : queryDocumentSnapshots){
+                    Medicine med = ds.toObject(Medicine.class);
+                    totalMedList.add(med);
+                }
+                adapter = new myAdapterClass(totalMedList);
+                recyclerView.setAdapter(adapter);
 
+                adapter.setOnItemClickListener(new myAdapterClass.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Toast.makeText(getContext(), " " + totalMedList.get(position).getName(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), AddMedicine.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("medname", totalMedList.get(position).getName());
+                        intent.putExtras(bundle);
+                        intent.putExtra("Activity", "DailyMedsFragment");
+                        startActivityForResult(intent, 3);
+                    }
+                });
+            }
+        });
     }
 
     public void Diet(){
