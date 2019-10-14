@@ -64,21 +64,21 @@ public class DailyMedsFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_daily_meds, container, false);
 
         /* WORKFLOW:
-        * make fcref to medicine_List
-        * get Calendar.DAY_OF_WEEK
-        * run loop to get list of all meds for that day
-        * add onClick listener and move to new activity.
-        * onCLick: open modal ask for delete or update
-        *       if delete: go to deletefunc from this activity and perform fref.delete()
-        *       else
-        *           send request code to new activity,
-        *           send medicineName,
-        *           accept medname and extract document
-        *           display details in editText.
-        *           allow user to edit and save
-        *           accept new entries and update
-        *           check if calendar is getting updated
-        * */
+         * make fcref to medicine_List
+         * get Calendar.DAY_OF_WEEK
+         * run loop to get list of all meds for that day
+         * add onClick listener and move to new activity.
+         * onCLick: open modal ask for delete or update
+         *       if delete: go to deletefunc from this activity and perform fref.delete()
+         *       else
+         *           send request code to new activity,
+         *           send medicineName,
+         *           accept medname and extract document
+         *           display details in editText.
+         *           allow user to edit and save
+         *           accept new entries and update
+         *           check if calendar is getting updated
+         * */
 
         acct = GoogleSignIn.getLastSignedInAccount(this.getActivity());
         if (acct != null) {
@@ -89,7 +89,7 @@ public class DailyMedsFragment extends Fragment {
             yourMedList = v.findViewById(R.id.YourMeds);
             todayGrid = v.findViewById(R.id.gridToday);
             exerciseGrid = v.findViewById(R.id.gridExercise);
-            dietGrid =v .findViewById(R.id.gridDiet);
+            dietGrid = v.findViewById(R.id.gridDiet);
             allMedsGrid = v.findViewById(R.id.gridAllMeds);
 
             toadysList.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +261,7 @@ public class DailyMedsFragment extends Fragment {
     }
 
     final static int RQS_1 = 1;
-    private void setAlarm(Context context , Calendar targetCal) {
+    private void setAlarm(Context context , ArrayList<Calendar> targetCal) {
 
 //        info.setText("\n\n***\n"
 //                + "Alarm is set@ " + targetCal.getTime() + "\n"
@@ -270,7 +270,9 @@ public class DailyMedsFragment extends Fragment {
         Intent intent = new Intent(context , AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
+        for(Calendar ct : targetCal) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
+        }
     }
 
     public void updateUI(){
@@ -305,41 +307,50 @@ public class DailyMedsFragment extends Fragment {
 
                 Calendar current = Calendar.getInstance();
                 ArrayList<Integer> selectedTime;
-                Calendar cal = Calendar.getInstance();
+                ArrayList<Calendar> calList;
+                calList = null;
                 for(Medicine mt : medList) {
+                    Calendar cal = Calendar.getInstance();
                     selectedTime = mt.getSelectedtimings();
-                    if(selectedTime.get(0) == 1) {            //before breakfast
+                    if(selectedTime.get(0) == 1) {      //before breakfast
                         morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(1) == 1) {     //after breakfast
                         morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(2) == 1) {     //before lunch
                         morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(3) == 1) {     //after lunch
                         afternoon.add(mt);
-                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 13 ,  30 , 00);
+                        cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 14 ,  00 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(4) == 1) {     //afternoon
                         afternoon.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(5) == 1) {    //before dinner
                         evening.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30 , 00);
+                        calList.add(cal);
                     }
                     if(selectedTime.get(6) == 1) {    //after dinner
                         evening.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00 , 00);
+                        calList.add(cal);
                     }
                 }
-                if(cal.compareTo(current) > 0) {
-                    setAlarm(context , cal);
-                }
+//                if(cal.compareTo(current) > 0) {
+                    setAlarm(context , calList);
+                //}
                 final ArrayList<Medicine> finalMedList = new ArrayList<>();
                 finalMedList.addAll(morning);
                 finalMedList.addAll(afternoon);
