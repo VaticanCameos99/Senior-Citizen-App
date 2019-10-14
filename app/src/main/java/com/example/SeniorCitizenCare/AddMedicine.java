@@ -292,6 +292,8 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
             if (!TextUtils.isEmpty(name) && dates != null && !selectedDays.isEmpty() && !timings.isEmpty()) {
                 Medicine medicine = new Medicine(name, date2, selectedDays, timings);
 
+
+
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
