@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,6 +143,7 @@ public class DailyMedsFragment extends Fragment {
         emailid = acct.getEmail();
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         final ArrayList<Medicine> totalMedList = new ArrayList<>();
         fcref = db.collection("List").document(emailid).collection("Medicine List");
         fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -151,6 +153,12 @@ public class DailyMedsFragment extends Fragment {
                     Medicine med = ds.toObject(Medicine.class);
                     totalMedList.add(med);
                 }
+
+                ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+                int h = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300 + 20*totalMedList.size(), getResources().getDisplayMetrics());
+                params.height = h;
+                recyclerView.setLayoutParams(params);
+
                 adapter = new myAdapterClass(totalMedList);
                 recyclerView.setAdapter(adapter);
 
@@ -173,6 +181,10 @@ public class DailyMedsFragment extends Fragment {
     public void Diet(){
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+        int h = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 420, getResources().getDisplayMetrics());
+        params.height = h;
+        recyclerView.setLayoutParams(params);
 
         dietList = new ArrayList<>();
         dietList.add("Diet for Diabetes");
@@ -223,6 +235,10 @@ public class DailyMedsFragment extends Fragment {
 
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+        int h = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1000, getResources().getDisplayMetrics());
+        params.height = h;
+        recyclerView.setLayoutParams(params);
 
         addYoga();
         yogaAdapter = new MyAdapterYogaClass(yogaList);
@@ -269,6 +285,9 @@ public class DailyMedsFragment extends Fragment {
         //Get today's day of the week
         final Calendar calendar = Calendar.getInstance();
         final int cDay = calendar.get(Calendar.DAY_OF_WEEK);  //get current day
+        final ArrayList<Medicine> morning = new ArrayList<>();
+        final ArrayList<Medicine> afternoon = new ArrayList<>();
+        final ArrayList<Medicine> evening = new ArrayList<>();
 
         fcref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -290,32 +309,42 @@ public class DailyMedsFragment extends Fragment {
                 for(Medicine mt : medList) {
                     selectedTime = mt.getSelectedtimings();
                     if(selectedTime.get(0) == 1) {            //before breakfast
+                        morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 7 ,  00 , 00);
                     }
-                    else if(selectedTime.get(1) == 1) {     //after breakfast
+                    if(selectedTime.get(1) == 1) {     //after breakfast
+                        morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 9 ,  00 , 00);
                     }
-                    else if(selectedTime.get(2) == 1) {     //before lunch
+                    if(selectedTime.get(2) == 1) {     //before lunch
+                        morning.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 11 ,  30 , 00);
                     }
-                    else if(selectedTime.get(3) == 1) {     //after lunch
+                    if(selectedTime.get(3) == 1) {     //after lunch
+                        afternoon.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 13 ,  30 , 00);
                     }
-                    else if(selectedTime.get(4) == 1) {     //afternoon
+                    if(selectedTime.get(4) == 1) {     //afternoon
+                        afternoon.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 16 ,  30 , 00);
                     }
-                    else if(selectedTime.get(5) == 1) {    //before dinner
+                    if(selectedTime.get(5) == 1) {    //before dinner
+                        evening.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 19 ,  30 , 00);
                     }
-                    else if(selectedTime.get(6) == 1) {    //after dinner
+                    if(selectedTime.get(6) == 1) {    //after dinner
+                        evening.add(mt);
                         cal.set(Calendar.YEAR , Calendar.MONTH , Calendar.DAY_OF_MONTH , 22 ,  00 , 00);
                     }
                 }
                 if(cal.compareTo(current) > 0) {
                     setAlarm(context , cal);
                 }
-
-                adapter = new myAdapterClass(medList);
+                final ArrayList<Medicine> finalMedList = new ArrayList<>();
+                finalMedList.addAll(morning);
+                finalMedList.addAll(afternoon);
+                finalMedList.addAll(evening);
+                adapter = new myAdapterClass(finalMedList);
                 recyclerView.setAdapter(adapter);
 
                 adapter.setOnItemClickListener(new myAdapterClass.OnItemClickListener() {
@@ -342,7 +371,33 @@ public class DailyMedsFragment extends Fragment {
         yogaList.add(new YogaClass(R.drawable.ic_person, "Ashtanga Yoga",
                 "Ashtanga means “eight limbs” and encompasses a yogic lifestyle",
                 "https://www.youtube.com/watch?v=OAg0oNHVjXQ"));
-
+        yogaList.add(new YogaClass(0, "Iyengar Yoga",
+                "The emphasis on this practice is alignment in the asanas" +
+                        " using breath control through pranayama and the use of props (bolsters, blankets, blocks and straps.)"
+                , "https://www.youtube.com/watch?v=5KrDlrmsRrU"));
+        yogaList.add(new YogaClass(0 ,"Bikram Yoga",
+                "Class consists of the same twenty-six yoga postures and two breathing exercises." +
+                        " It is ninety minutes long and done in a room that is 105 degrees Fahrenheit with 40% humidity." +
+                        " The room is bright and the students face mirrors to check proper posture and alignment. ",
+                "https://www.youtube.com/watch?v=yFtDSWWfYmI"));
+        yogaList.add(new YogaClass(0 ,"Jivamukti Yoga",
+                "Class incorporates Sanskrit chanting, Pranayama, and movement (Asanas), with a theme or lesson for each class." +
+                        " This is a good blend of spiritual and physical exercise.",
+                "https://www.youtube.com/watch?v=fB6B9rQjEeU"));
+        yogaList.add(new YogaClass(0 ,"Power Yoga",
+                "Power yoga is a more active approach to the traditional Hatha yoga poses." +
+                        " The Ashtanga yoga poses are performed more quickly and with added core exercises and upper body work.",
+                "https://www.youtube.com/watch?v=Ue0f6VHRiFE"));
+        yogaList.add(new YogaClass(0 ,"Sivananda Yoga",
+                "This is a yoga system based on the five yogic principals: " +
+                        "proper breathing, relaxation, diet, exercise, and positive thinking." +
+                        " The asana practice is usually twelve basic postures or variations of the Asanas, with Sun Salutations and Savasana.",
+                "https://www.youtube.com/watch?v=AN0fVx8gi8w"));
+        yogaList.add(new YogaClass(0 ,"Yin Yoga",
+                "Yin yoga is a meditative practice that allows your body to become" +
+                        " comfortable in a pose without doing any work (strength)." +
+                        " It focuses on lengthening the connective tissues within the body.",
+                "https://www.youtube.com/watch?v=3YOYyQ8cb5c"));
     }
 
 }

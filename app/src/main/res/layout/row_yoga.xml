@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:text="Description"
             android:textSize="15sp"
-            android:layout_marginLeft="10dp"
             android:layout_below="@+id/yogaTitle"
             android:id="@+id/yogaDescription"/>
 
