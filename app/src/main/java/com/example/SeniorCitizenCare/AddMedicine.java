@@ -279,15 +279,17 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
 
             ArrayList<Date> date2 = new ArrayList<>();
             //test this
-            for(Date date: dates){
-                int dateDayint = CalendarFragment.getDay(date);
-                if(selectedDays.contains(dateDayint)){
-                   date2.add(date);
+            if(dates!=null) {
+                for (Date date : dates) {
+                    int dateDayint = CalendarFragment.getDay(date);
+                    if (selectedDays.contains(dateDayint)) {
+                        date2.add(date);
+                    }
                 }
             }
 
             //for Firestore
-            if (!TextUtils.isEmpty(name) && !dates.isEmpty() && !selectedDays.isEmpty() && !timings.isEmpty()) {
+            if (!TextUtils.isEmpty(name) && dates != null && !selectedDays.isEmpty() && !timings.isEmpty()) {
                 Medicine medicine = new Medicine(name, date2, selectedDays, timings);
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
@@ -318,7 +320,9 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
 
     @Override
     public void applyTexts(ArrayList<Date> dates) {
-        this.dates = dates; // getting list of dates from dialog listener
-        Toast.makeText(this, "" + this.dates.size(), Toast.LENGTH_LONG).show();
+        if(!dates.isEmpty()) {
+            this.dates = dates; // getting list of dates from dialog listener
+            Toast.makeText(this, "" + this.dates.size(), Toast.LENGTH_LONG).show();
+        }
     }
 }
