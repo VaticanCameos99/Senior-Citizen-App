@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class DailyMedsFragment extends Fragment {
     View v;
     CardView toadysList, exercises, diet, yourMedList;
     TextView exerciseGrid, allMedsGrid, dietGrid, todayGrid;
+    ImageView morningImage, afternoonImage, nightImage;
 
     private MyAdapterYogaClass yogaAdapter;
     private ArrayList<YogaClass> yogaList;
@@ -63,10 +65,13 @@ public class DailyMedsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_daily_meds, container, false);
-         morningText = v.findViewById(R.id.MorningText);
+        morningText = v.findViewById(R.id.MorningText);
         afternoonText = v.findViewById(R.id.AfternoonText);
         eveningText = v.findViewById(R.id.EveningText);
         linkText = v.findViewById(R.id.linkText);
+        morningImage = v.findViewById(R.id.morningImage);
+        afternoonImage = v.findViewById(R.id.afternoonImage);
+        nightImage = v.findViewById(R.id.nightImage);
 
         /* WORKFLOW:
         * make fcref to medicine_List
@@ -469,12 +474,15 @@ public class DailyMedsFragment extends Fragment {
     //Hide Unnecessary Recycler Views
     public void hideRecycler(){
         morningText.setVisibility(View.GONE);
+        morningImage.setVisibility(View.GONE);
 
         afternoonText = v.findViewById(R.id.AfternoonText);
         afternoonText.setVisibility(View.GONE);
+        afternoonImage.setVisibility(View.GONE);
 
         eveningText = v.findViewById(R.id.EveningText);
         eveningText.setVisibility(View.GONE);
+        nightImage.setVisibility(View.GONE);
 
         recyclerViewAfternoon = v.findViewById(R.id.DailyMedsAfternoonRecycler);
         recyclerViewAfternoon.setVisibility(View.GONE);
@@ -486,11 +494,15 @@ public class DailyMedsFragment extends Fragment {
 
     public void showRecycler(){
         morningText.setVisibility(View.VISIBLE);
+        morningImage.setVisibility(View.VISIBLE);
+
         afternoonText = v.findViewById(R.id.AfternoonText);
         afternoonText.setVisibility(View.VISIBLE);
+        afternoonImage.setVisibility(View.VISIBLE);
 
         eveningText = v.findViewById(R.id.EveningText);
         eveningText.setVisibility(View.VISIBLE);
+        nightImage.setVisibility(View.VISIBLE);
 
         recyclerViewAfternoon = v.findViewById(R.id.DailyMedsAfternoonRecycler);
         recyclerViewAfternoon.setVisibility(View.VISIBLE);

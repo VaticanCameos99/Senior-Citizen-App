@@ -132,24 +132,41 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/dietgrid" />
                 </androidx.cardview.widget.CardView>
-
-
             </GridLayout>
 
             <TextView
-                android:id="@+id/linkText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                android:fontFamily="@font/roboto_medium"
                 android:text=""
-                android:textSize="20sp"></TextView>
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="#2C3E50"
+                android:id="@+id/linkText"
+                android:layout_marginLeft="35dp"
+                />
 
-            <TextView
-                android:id="@+id/MorningText"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Morning Medicines" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/MorningText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Morning Medicines"
+                    android:textColor="#8D9191"
+                    android:textSize="20sp"
+                    />
+
+                <ImageView
+                    android:id="@+id/morningImage"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/afternoon" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DailyMedsRecycler"
@@ -158,11 +175,28 @@
                 android:nestedScrollingEnabled="false"
                 app:fastScrollEnabled="false" />
 
-            <TextView
-                android:id="@+id/AfternoonText"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Afternoon Medicines" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/AfternoonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Afternoon Medicines"
+                    android:textColor="#8D9191"
+                    android:textSize="20sp"
+                    />
+
+                <ImageView
+                    android:id="@+id/afternoonImage"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/morningicon" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DailyMedsAfternoonRecycler"
@@ -171,21 +205,37 @@
                 android:nestedScrollingEnabled="false"
                 app:fastScrollEnabled="false" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/EveningText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Evening Medicines" />
+                android:layout_marginLeft="35dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Evening Medicines"
+                android:textColor="#8D9191"
+                android:textSize="20sp"
+                />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/DailyMedsEveningRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="800dp"
-                android:nestedScrollingEnabled="false"
-                app:fastScrollEnabled="false" />
+            <ImageView
+                android:id="@+id/nightImage"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/nighticon" />
+            </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/DailyMedsEveningRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="800dp"
+            android:nestedScrollingEnabled="false"
+            app:fastScrollEnabled="false" />
+    </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+</ScrollView>
 
-</RelativeLayout>
+    </RelativeLayout>
