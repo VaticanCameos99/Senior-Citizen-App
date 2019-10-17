@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 public class ContactRelationDialog extends DialogFragment {
 
-    public String[] options = {"Caregiver", "Father", "Mother", "Son", "Daugther", "Spouse", "Mistress"};
+    public String[] options = {"Caregiver", "Father", "Mother", "Son", "Daughter", "Spouse", "Friend"};
     DialogListener listener;
     @NonNull
     @Override

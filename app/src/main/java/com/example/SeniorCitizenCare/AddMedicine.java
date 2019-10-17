@@ -299,8 +299,10 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
 
             //add alarm here
                 final int RQS_1 = 1;
-                ArrayList<Calendar> calList;
-                calList = null;
+
+
+                ArrayList<Calendar> calList = new ArrayList<>();
+                calList.clear();
                 for(Date date : date2) {
                     SimpleDateFormat sdfdate = new SimpleDateFormat("dd");
                     SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
@@ -314,7 +316,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                         calList.add(cal);
                     }
                     if(timings.get(1) == 1) {     //after breakfast
-                        cal.set(yr , mon , dt ,  9 ,  00 , 00);
+                        cal.set(yr , mon , dt ,  9 ,  30 , 00);
                         calList.add(cal);
                     }
                     if(timings.get(2) == 1) {     //before lunch
@@ -338,6 +340,8 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                         calList.add(cal);
                     }
                 }
+
+
                 Intent intent = new Intent(AddMedicine.this , AlarmReceiver.class);
                 intent.putExtra("Medicine Name", name);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AddMedicine.this, RQS_1, intent, 0);
@@ -345,6 +349,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                 for(Calendar ct : calList) {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
                 }
+
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

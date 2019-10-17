@@ -18,17 +18,18 @@ public class AlarmReceiver extends  BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context , Intent intent) {
-        /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         Ringtone r = RingtoneManager.getRingtone(context ,  notification);
         r.play();
-        Toast.makeText(context , "It's  time for medicine!", Toast.LENGTH_LONG).show();*/
-        NotificationChannel channel = new NotificationChannel("channel_id" , "Alarm Notification" , NotificationManager.IMPORTANCE_HIGH);
-        channel.setDescription("Reminder for medicine");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context ,  "channel_id")
-                .setSmallIcon(R.drawable.applogo)
-                .setContentTitle("It's  time for medicine!")
-                .setContentText(intent.getStringExtra("Medicine Name"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
+        String s = intent.getStringExtra("Medicine Name");
+   //     Toast.makeText(context , "It's  time for medicine! Remember to take: " + s, Toast.LENGTH_LONG).show();
+//        channel.setDescription("Reminder for medicine");
+//        NotificationChannel channel = new NotificationChannel("channel_id" , "Alarm Notification" , NotificationManager.IMPORTANCE_HIGH);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context ,  "channel_id")
+//                .setSmallIcon(R.drawable.applogo)
+//                .setContentTitle("It's  time for medicine!")
+//                .setContentText(intent.getStringExtra("Medicine Name"))
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                .setAutoCancel(true);
     }
 }

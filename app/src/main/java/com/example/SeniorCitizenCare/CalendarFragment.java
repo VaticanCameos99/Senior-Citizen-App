@@ -200,14 +200,9 @@ public class CalendarFragment extends Fragment {
 
                     SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
                     SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
-                    int i = 0;
                     for(Date date : selectedDates){
                         int dateDayint = getDay(date);
-                        if(dateDayint == days.get(i)){
-                            i++;
-                            if(i == days.size())
-                                i = 0;
-
+                        if(days.contains(dateDayint)){
                             int day = Integer.parseInt(sdfDay.format(date));
                             int month = Integer.parseInt(sdfMonth.format(date));
                             calendarView = (MCalendarView) getActivity().findViewById(R.id.calendar);

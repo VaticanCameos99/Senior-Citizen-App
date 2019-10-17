@@ -365,7 +365,9 @@ public class DailyMedsFragment extends Fragment {
                 finalMedList.addAll(morning);
                 finalMedList.addAll(afternoon);
                 finalMedList.addAll(evening);
-                adapter = new myAdapterClass(finalMedList);
+                adapter = new myAdapterClass(morning);
+                adapterAfternoon = new myAdapterClass(afternoon);
+                adapterEvening = new myAdapterClass(evening);
                 recyclerView.setAdapter(adapter);
                 ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
                 int h = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10+ 60*morning.size(), getResources().getDisplayMetrics());

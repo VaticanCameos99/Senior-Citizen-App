@@ -19,6 +19,7 @@ public class BottomNav extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_nav);
 
         BottomNavigationView bottomNav = findViewById(R.id.BottomNav);
+        bottomNav.getMenu().findItem(R.id.nav_daily_meds).setChecked(true);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
