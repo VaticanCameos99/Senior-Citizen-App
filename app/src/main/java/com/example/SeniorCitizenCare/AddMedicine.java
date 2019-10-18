@@ -15,7 +15,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -298,7 +302,6 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                 Medicine medicine = new Medicine(name, date2, selectedDays, timings);
 
             //add alarm here
-                final int RQS_1 = 1;
 
 
                 ArrayList<Calendar> calList = new ArrayList<>();
@@ -341,14 +344,19 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                     }
                 }
 
-
-                Intent intent = new Intent(AddMedicine.this , AlarmReceiver.class);
-                intent.putExtra("Medicine Name", name);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddMedicine.this, RQS_1, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) AddMedicine.this.getSystemService(Context.ALARM_SERVICE);
-                for(Calendar ct : calList) {
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
-                }
+                    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    intent.putExtra(AlarmClock.EXTRA_HOUR, calList.get(0).get(Calendar.HOUR));
+                    intent.putExtra(AlarmClock.EXTRA_MINUTES, calList.get(0).get(Calendar.MINUTE));
+                    intent.putExtra(AlarmClock.EXTRA_MESSAGE, "It's time for medicine");
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                    else {
+                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                        Ringtone r = RingtoneManager.getRingtone(AddMedicine.this ,  notification);
+                        r.play();
+                        Toast.makeText(AddMedicine.this , "It's  time for medicine!", Toast.LENGTH_LONG).show();
+                    }
 
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)

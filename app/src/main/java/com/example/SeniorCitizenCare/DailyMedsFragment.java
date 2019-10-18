@@ -283,20 +283,6 @@ public class DailyMedsFragment extends Fragment {
         updateUI();
     }
 
-    final static int RQS_1 = 1;
-    private void setAlarm(Context context , ArrayList<Calendar> targetCal) {
-
-//        info.setText("\n\n***\n"
-//                + "Alarm is set@ " + targetCal.getTime() + "\n"
-//                + "***\n");
-
-        Intent intent = new Intent(context , AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RQS_1, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        for(Calendar ct : targetCal) {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, ct.getTimeInMillis(), pendingIntent);
-        }
-    }
 
     public void updateUI(){
         recyclerView = v.findViewById(R.id.DailyMedsRecycler);
