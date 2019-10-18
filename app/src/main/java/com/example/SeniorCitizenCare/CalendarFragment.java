@@ -223,7 +223,7 @@ public class CalendarFragment extends Fragment {
     }
 
     public static int getDay(Date d){
-        String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"};
+        String DaysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         SimpleDateFormat sdfday = new SimpleDateFormat("EE");
         String dday = sdfday.format(d);

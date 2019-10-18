@@ -314,6 +314,7 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                     int dt = Integer.parseInt(sdfdate.format(date));
                     int yr = Integer.parseInt(sdfdate.format(date));
                     Calendar cal = Calendar.getInstance();
+                    int a ;
                     if(timings.get(0) == 1) {      //before breakfast
                         cal.set(yr , mon , dt , 7 ,  00 , 00);
                         calList.add(cal);
@@ -344,10 +345,13 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                     }
                 }
 
+                
+
                     Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
-                    intent.putExtra(AlarmClock.EXTRA_HOUR, calList.get(0).get(Calendar.HOUR));
+                    intent.putExtra(AlarmClock.EXTRA_HOUR, calList.get(0).get(Calendar.HOUR_OF_DAY));
+                    intent.putExtra(AlarmClock.EXTRA_DAYS , selectedDays.get(0));
                     intent.putExtra(AlarmClock.EXTRA_MINUTES, calList.get(0).get(Calendar.MINUTE));
-                    intent.putExtra(AlarmClock.EXTRA_MESSAGE, "It's time for medicine");
+                    intent.putExtra(AlarmClock.EXTRA_MESSAGE, "It's time for medicine. Remember to take " + name);
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
                     }
