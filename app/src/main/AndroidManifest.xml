@@ -3,6 +3,7 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.SeniorCitizenCare">
 
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,10 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".AlarmReceiver"
-            android:process=":remote" />
+        
 
         <meta-data
             android:name="com.google.android.gms.version"
