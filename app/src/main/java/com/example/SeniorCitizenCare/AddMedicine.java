@@ -345,11 +345,30 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                     }
                 }
 
-                
+                    ArrayList<Integer> days = new ArrayList<>();
+                    days.clear();
+
+                    for(int day : selectedDays) {
+                        if(day == 1)
+                            days.add(1);
+                        else if(day == 2)
+                            days.add(2);
+                        else if(day == 3)
+                            days.add(3);
+                        else if(day == 4)
+                            days.add(4);
+                        else if(day == 5)
+                            days.add(5);
+                        else if(day == 6)
+                            days.add(6);
+                        else if(day == 7)
+                            days.add(7);
+                    }
 
                     Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
                     intent.putExtra(AlarmClock.EXTRA_HOUR, calList.get(0).get(Calendar.HOUR_OF_DAY));
-                    intent.putExtra(AlarmClock.EXTRA_DAYS , selectedDays.get(0));
+                    //intent.putExtra(AlarmClock.EXTRA_DAYS , selectedDays.get(0));
+                    intent.putExtra(AlarmClock.EXTRA_DAYS , days);
                     intent.putExtra(AlarmClock.EXTRA_MINUTES, calList.get(0).get(Calendar.MINUTE));
                     intent.putExtra(AlarmClock.EXTRA_MESSAGE, "It's time for medicine. Remember to take " + name);
                     if (intent.resolveActivity(getPackageManager()) != null) {
@@ -361,6 +380,8 @@ public class AddMedicine extends AppCompatActivity implements ExampleDialog.Exam
                         r.play();
                         Toast.makeText(AddMedicine.this , "It's  time for medicine!", Toast.LENGTH_LONG).show();
                     }
+
+
 
 
                 fdb.collection("List").document(emailid).collection("Medicine List").document(name).set(medicine)
