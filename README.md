@@ -1,4 +1,4 @@
-# SDL-project - Senior Citizen App
+# Senior Citizen App
 
 This app allows senior citizens to add, delete and modify reminders for their medicines, add emergency contacts and keep a log of their diet and exercises which are designed for their special needs.
 
